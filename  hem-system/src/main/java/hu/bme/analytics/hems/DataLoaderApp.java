@@ -26,7 +26,7 @@ public class DataLoaderApp implements CommandLineRunner {
 	
 	@Override
 	public void run(String... arg0) throws Exception {
-		
+		 // here comes the data load
 	}
 
 }
