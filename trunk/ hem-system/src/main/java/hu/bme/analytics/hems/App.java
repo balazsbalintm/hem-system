@@ -16,7 +16,7 @@ public class App implements CommandLineRunner
 	EmployeeRepository repository;
 	
     public static void main( String[] args )
-    {
+    { 
     	SpringApplication.run(App.class);
     }
     
