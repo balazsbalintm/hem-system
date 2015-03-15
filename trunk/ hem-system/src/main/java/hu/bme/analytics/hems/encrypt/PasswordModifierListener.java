@@ -34,13 +34,7 @@ public class PasswordModifierListener implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		LOGGER.log(Level.INFO, "Submit button was pressed!");
 		try {
-			File f = new File("appPassword");
-			FileInputStream fis = new FileInputStream(f);
-			byte[] bin = new byte[(int)f.length()];
-			fis.read(bin);
-			fis.close();
-							
-			Boolean result = PasswordEncryptionService.authenticate(tf_oldPw.getText(), bin);
+			Boolean result = PasswordEncryptionService.authenticateFromLocalFile("admin", tf_oldPw.getText());
 			
 			if(result) {
 				if(tf_newPw.getText() != null && tf_newPw.getText().equals(tf_newPwAgain.getText())) {
