@@ -1,4 +1,4 @@
-#btn_login {
+.menuButton {
     -fx-background-color: 
         #6A7998,
         linear-gradient(#6A7998 0%, #999999 20%, #A1B8E6 100%),
@@ -10,17 +10,18 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
     -fx-font-family: "Segoe WP";
     -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 13px;
+    -fx-font-size: 12px;
     -fx-padding: 20 0 10 0;
     -fx-margin: 40 100 40 100;
+    -fx-rotate: 270;
     -fx-text-alignment: center;
 }
-#btn_login Text {
+.menuButton Text {
  	-fx-fill: white;
     -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
 }
 
-#btn_login:hover {
+.menuButton:hover {
  	-fx-background-color: 
         linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
         #9d4024,
@@ -28,20 +29,27 @@
         radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
 }
 
-.label {
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+#vb_menu {
+	-fx-background-color: #6A7998, linear-gradient(#666666 0%, #999999 20%, #E5E5E5 100%);
+}
+
+#mb_top {
+	-fx-background-color: #666666;	
     -fx-font-family: "Segoe WP";
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-    -fx-text-alignment: right;
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
 }
 
-#loginTitle{
-   -fx-font-size: 16px;
-   -fx-font-family: "Segoe WP";
-   -fx-fill: #818181;
-   -fx-text-alignment: center;
-   -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+#mb_top .menuitem {
+	-fx-background-color: #6A7998;
+	-fx-font-family: "Segoe WP";
+	-fx-text-fill: #6A7998;
 }
 
+
+#mb_top .menuitem:hover {
+ 	-fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+        #9d4024,
+        #d86e3a,
+        radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+}

@@ -1,9 +1,16 @@
 package hu.bme.analytics.hems;
 
 import hu.bme.analytics.hems.entities.repositories.EmployeeRepository;
+import hu.bme.analytics.hems.ui.controller.MainController;
+import hu.bme.analytics.hems.ui.controller.ViewNavigator;
+import hu.bme.analytics.hems.ui.view.Views;
+
+import java.io.IOException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +20,10 @@ import org.springframework.context.annotation.Import;
 @Import(AppConfig.class)
 public class App extends AbstractJavaFxApplicationSupport {
 
-	/**
-	 * Note that this is configured in application.properties
-	 */
 	@Value("${app.ui.title}")
-	//
 	private String windowTitle;
+	
+	private String MAIN_VIEW_LOC = "./ui/view/MainView.fxml";
 
 	@Autowired
 	EmployeeRepository repository;
@@ -28,10 +33,10 @@ public class App extends AbstractJavaFxApplicationSupport {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		// BorderPane page = (BorderPane)
+		// FXMLLoader.load(App.class.getResource("./ui/view/LoginLayout.fxml"));
 
-		BorderPane page = (BorderPane) FXMLLoader.load(App.class.getResource("./ui/view/LoginLayout.fxml"));
-		Scene scene = new Scene(page);
-		stage.setScene(scene);
+		stage.setScene(createScene(loadMainPane()));
 		stage.setTitle(windowTitle);
 		stage.show();
 
@@ -53,6 +58,23 @@ public class App extends AbstractJavaFxApplicationSupport {
 		 */
 
 	}
+
+	private Pane loadMainPane() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		Pane mainPane = (Pane) loader.load(getClass().getResourceAsStream(MAIN_VIEW_LOC));
+		ViewNavigator.setMainController(loader.getController());
+		ViewNavigator.loadView(Views.LoginView);
+
+		return mainPane;
+	}
+	
+    private Scene createScene(Pane mainPane) {
+        Scene scene = new Scene(
+            mainPane
+        );
+ 
+        return scene;
+    }
 
 	public static void main(String[] args) {
 		launchApp(App.class, args);

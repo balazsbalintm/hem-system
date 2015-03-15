@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="471.0" prefWidth="507.0" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+   <top>
+      <MenuBar fx:id="mb_top" prefHeight="16.0" prefWidth="507.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" styleClass="menuitem" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" styleClass="menuitem" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <VBox fx:id="vb_menu" maxWidth="70" prefHeight="200.0" spacing="100" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="160.0" prefWidth="150.0" styleClass="menuButton" text="General information" wrapText="true" />
+            <Button mnemonicParsing="false" prefHeight="160.0" prefWidth="70.0" styleClass="menuButton" text="Issue statistics" wrapText="true" />
+            <Button mnemonicParsing="false" prefHeight="160.0" prefWidth="70.0" styleClass="menuButton" text="Data browser" wrapText="true" />
+         </children>
+      </VBox>
+   </left>
+</BorderPane>
