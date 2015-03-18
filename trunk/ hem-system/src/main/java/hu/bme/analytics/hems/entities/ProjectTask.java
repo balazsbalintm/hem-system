@@ -1,25 +1,36 @@
 package hu.bme.analytics.hems.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
-public class Task {
+public class ProjectTask {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String taskName;
+	private String taskPosition;
+	
+	@Lob
+	@Column( length = 100000 )
 	private String taskDescription;
 	
-	protected Task() {
+	protected ProjectTask() {
 	}
 	
-	public Task(String taskName, String taskDescription) {
+	public ProjectTask(String taskName, String taskPosition,
+			String taskDescription) {
+		super();
 		this.taskName = taskName;
+		this.taskPosition = taskPosition;
 		this.taskDescription = taskDescription;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -43,6 +54,14 @@ public class Task {
 
 	public void setTaskDescription(String taskDescription) {
 		this.taskDescription = taskDescription;
+	}
+
+	public String getTaskPosition() {
+		return taskPosition;
+	}
+
+	public void setTaskPosition(String taskPosition) {
+		this.taskPosition = taskPosition;
 	}
 	
 }

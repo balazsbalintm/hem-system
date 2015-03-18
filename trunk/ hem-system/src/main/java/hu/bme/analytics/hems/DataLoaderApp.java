@@ -4,7 +4,7 @@ import hu.bme.analytics.hems.entities.repositories.EmployeeRepository;
 import hu.bme.analytics.hems.entities.repositories.PerfStatRepository;
 import hu.bme.analytics.hems.entities.repositories.PerfTextRepository;
 import hu.bme.analytics.hems.entities.repositories.ProjectRepository;
-import hu.bme.analytics.hems.entities.repositories.TaskRepository;
+import hu.bme.analytics.hems.entities.repositories.ProjectTaskRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +22,7 @@ public class DataLoaderApp implements CommandLineRunner {
 	@Autowired
 	ProjectRepository projectRepository;
 	@Autowired
-	TaskRepository taskRepository;
+	ProjectTaskRepository taskRepository;
 	
 	@Override
 	public void run(String... arg0) throws Exception {

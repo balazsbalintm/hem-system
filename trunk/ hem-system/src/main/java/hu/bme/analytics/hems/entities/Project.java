@@ -1,15 +1,16 @@
 package hu.bme.analytics.hems.entities;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
 
 @Entity
 public class Project {
@@ -18,34 +19,34 @@ public class Project {
 	private Long id;
 	private String projectName;
 
-	@OneToMany(targetEntity=Employee.class, fetch=FetchType.EAGER)
-	private List<Employee> l_employees;
-	
-	@OneToMany(targetEntity=Task.class, fetch=FetchType.EAGER)
-	private List<Task> l_tasks;
-	
-	@ElementCollection
-	private Map<Employee, Task> m_assignments;
+	@OneToMany
+	private Map<Employee, TaskSet> m_assignments = new HashMap<Employee, TaskSet>();
 	
 	protected Project() {
 		
 	}
 	
-	public Project(String projectName, List<Employee> l_employees, List<Task> l_tasks, Map<Employee, Task> m_assignments) {
+	public Project(String projectName) {
+		super();
 		this.projectName = projectName;
-		this.l_employees = l_employees;
-		this.l_tasks = l_tasks;
-		this.m_assignments = m_assignments;
 	}
 
+	public TaskSet assignTaskToEmployee(Employee emp, ProjectTask task) {
+		TaskSet taskSet;
+		if (!m_assignments.containsKey(emp)){
+			Set<ProjectTask> s_task = new HashSet<ProjectTask>();
+			s_task.add(task);
+			taskSet = new TaskSet(s_task);
+			
+			m_assignments.put(emp, taskSet);
+		} else {
+			taskSet = m_assignments.get(emp);
+			taskSet.getTasks().add(task);
+		}
+		
+		return taskSet;
+	}
 	
-	@Override
-	public String toString() {
-		return "Project [id=" + id + ", projectName=" + projectName
-				+ ", l_employees=" + l_employees + ", l_tasks=" + l_tasks
-				+ ", m_assignments=" + m_assignments + "]";
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -62,28 +63,4 @@ public class Project {
 		this.projectName = projectName;
 	}
 
-	public List<Employee> getL_employees() {
-		return l_employees;
-	}
-
-	public void setL_employees(List<Employee> l_employees) {
-		this.l_employees = l_employees;
-	}
-
-	public List<Task> getL_tasks() {
-		return l_tasks;
-	}
-
-	public void setL_tasks(List<Task> l_tasks) {
-		this.l_tasks = l_tasks;
-	}
-
-	public Map<Employee, Task> getM_assignments() {
-		return m_assignments;
-	}
-
-	public void setM_assignments(Map<Employee, Task> m_assignments) {
-		this.m_assignments = m_assignments;
-	}
-	
 }
