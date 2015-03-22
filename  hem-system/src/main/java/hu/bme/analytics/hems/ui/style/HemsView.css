@@ -1,3 +1,13 @@
+.background {
+    -fx-background-image: url('CoarseGrid.png');
+    -fx-background-repeat: repeat;
+    -fx-background-color:
+        linear-gradient(#38424b 0.0%, #1f2429 20.0%, #191d22 100.0%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(114.0,131.0,148.0,0.9), rgba(255.0,255.0,255.0,0.0));
+}
+
+
 .menuButton {
     -fx-background-color: 
         #6A7998,
@@ -30,11 +40,21 @@
 }
 
 #vb_menu {
-	-fx-background-color: #6A7998, linear-gradient(#666666 0%, #999999 20%, #E5E5E5 100%);
+	-fx-background-color: rgba(200.0, 200.0, 200.0, 0.05);
+    -fx-border-color: 
+        transparent transparent rgba(255.0, 255.0, 255.0, 0.08) transparent;
+    -fx-border-width: 1.5;
+    -fx-border-insets: 1.0; 
 }
 
 #mb_top {
-	-fx-background-color: #666666;	
+	-fx-background-color: rgba(200.0, 200.0, 200.0, 0.05);
+    -fx-border-color: 
+        transparent transparent rgba(255.0, 255.0, 255.0, 0.08) transparent,
+        transparent transparent rgba(0.0, 0.0, 0.0, 0.5) transparent;
+    -fx-border-width: 1.0, 1.5;
+    -fx-border-insets: -1.0, 0.0;  
+    
     -fx-font-family: "Segoe WP";
     -fx-text-fill: linear-gradient(white, #d0d0d0);
 }
@@ -52,4 +72,145 @@
         #9d4024,
         #d86e3a,
         radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+}
+
+
+
+/* *****TAB STLYING ***** */
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab-pane
+{
+    -fx-tab-min-width:90px;
+}
+
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+.tab-pane .tab
+{
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#242a2e, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+    -fx-background-radius: 7.0, 6.0, 5.0, 4.0, 3.0, 5.0;
+    -fx-background-insets: -3.0 -3.0 -4.0 -3.0, -3.0, 0.0, 1.0, 2.0, 0.0;
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
+    -fx-font-size: 26.0;
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-padding: 5.0 10.0 5.0 10.0;
+
+}
+
+.tab-pane .tab:hover 
+{
+ 	-fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#3f4950, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+
+}
+
+.tab-pane .tab:selected
+{
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#3f4950, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+}
+
+.tab .tab-label { 
+	-fx-text-fill: linear-gradient(white, #d0d0d0);
+    -effect: dropshadow( one-pass-box , rgba(255.0, 255.0, 255.0, 0.8), 0.0, 0.0 , 0.0 , -1.0 );
+    -fx-font-size: 14px;
+}
+
+.tab:selected .tab-label { 
+	-fx-text-fill: linear-gradient(white, #d0d0d0);
+	-effect: dropshadow( one-pass-box , rgba(255.0, 255.0, 255.0, 0.8), 0.0, 0.0 , 0.0 , -1.0 );  
+	-fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+
+
+
+/* GENERAL BUTTON AND TEXTFIELD STYLES */
+.button .text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0.0, 0.0, 0.0, 0.8), 0.0, 0.0 , 0.0 , -1.0 );
+}
+
+
+.button {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#242a2e, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+    -fx-background-radius: 7.0, 6.0, 5.0, 4.0, 3.0, 5.0;
+    -fx-background-insets: -3.0 -3.0 -4.0 -3.0, -3.0, 0.0, 1.0, 2.0, 0.0;
+    -fx-font-family: "Segoe WP";
+    -fx-text-fill: white;
+    -fx-font-size: 12.0;
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-padding: 10.0 20.0 10.0 20.0;
+}
+
+
+.button:focused, .button:hover {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#3f4950, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+
+}
+
+ 
+.text-field, .text-area {
+    -fx-font-size: 18.0;
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.3),
+        linear-gradient(rgba(0.0, 0.0, 0.0, 0.5), rgba(0.0, 0.0, 0.0, 0.8) 50.0%),
+        rgb(218.0, 226.0, 224.0);
+    -fx-background-insets: 0.0 0.0 -1.0 0.0, 0.0, 1.5;
+    -fx-background-radius: 6.0, 5.0, 4.0;
+    -fx-padding: 6.0 10.0 4.0 10.0;
+    -fx-effect: innershadow( gaussian, rgba(0.0, 0.0, 0.0, 0.8), 5.0, 0.0, 0.0, 2.0 );
+    -fx-font-family: "Segoe WP";
+}
+
+
+.text-area {
+    -fx-padding: 6.0 5.0 6.0 5.0;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-prompt-text-fill: rgb(128.0,128.0,128.0);
+    -fx-background-color: rgba(235.0, 235.0, 235.0, 0.5),
+        rgba(0.0, 0.0, 0.0, 0.4),
+        rgb(255.0, 255.0, 255.0);
+
 }

@@ -25,26 +25,37 @@ import org.springframework.context.annotation.Import;
 @Import(AppConfig.class)
 public class App extends AbstractJavaFxApplicationSupport {
 
+	//Singleton
+	private static App instance = null; 
+	public static App get() {
+		return instance;
+	} 
+	
+	
 	@Value("${app.ui.title}")
 	private String windowTitle;
 
 	private static String MAIN_VIEW_LOC = "./ui/view/MainView.fxml";
 
 	/* ****************** */
-	private static boolean IS_DATA_UPLOAD_MODE = true;
+	private static boolean IS_DATA_UPLOAD_MODE = false;
 	/* ****************** */
 
 	@Autowired
-	EmployeeRepository empRep;
+	public EmployeeRepository empRep;
 	@Autowired
-	ProjectRepository projectRep;
+	public ProjectRepository projectRep;
 	@Autowired
-	ProjectTaskRepository prjTaskRepository;
+	public ProjectTaskRepository prjTaskRepository;
 	@Autowired
-	TaskSetRepository taskSetRepository;
+	public TaskSetRepository taskSetRepository;
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		//set the singleton instance
+		instance = this;
+		
+		//decide if data upload mode or normal production
 		if (!IS_DATA_UPLOAD_MODE) {
 			stage.setScene(createScene(loadMainPane()));
 			stage.setTitle(windowTitle);
@@ -132,5 +143,6 @@ public class App extends AbstractJavaFxApplicationSupport {
 		taskSetRepository.save(tskSet3);
 
 		projectRep.save(prj1);
+		System.out.println("Upload finished");
 	}
 }

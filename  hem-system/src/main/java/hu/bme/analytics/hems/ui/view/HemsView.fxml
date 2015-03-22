@@ -6,9 +6,76 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="471.0" prefWidth="507.0" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" styleClass="background" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.bme.analytics.hems.ui.controller.HemsController">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="anchor_center" BorderPane.alignment="CENTER">
+         <children>
+            <TabPane prefHeight="757.0" prefWidth="792.0" side="LEFT" styleClass="tab" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+<!--            DATA BROWSER TAB -->
+                <Tab styleClass="tab" text="Data browser">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="50" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                                  
+                                  <RowConstraints maxHeight="50" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                                  
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Person's list" GridPane.rowIndex="0" />
+                                    <TableView fx:id="tbl_persons" GridPane.rowIndex="1"></TableView>
+                                    <Button mnemonicParsing="false" onMouseClicked="#personDataDownloadClickHandler" text="Download Persons" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    
+                                    <Label text="Task list" GridPane.rowIndex="2" />
+                                    <TableView fx:id="tbl_tasks" GridPane.rowIndex="3"></TableView>
+                                    <Button mnemonicParsing="false" onMouseClicked="#taskDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                 </children>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </content>
+                </Tab>
+<!--            ISSUE STATISTICS -->
+                <Tab text="Issue statistics">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+<!--            CANDIDATE SEARCHER -->
+                <Tab text="Candidate searcher">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <top>
+                              <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TextField />
+                                    <Button mnemonicParsing="false" text="Button" />
+                                 </children>
+                              </HBox>
+                           </top>
+                           <center>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                           </center></BorderPane>
+                     </content>
+                </Tab>
+<!--            PERFORMANCE EVALUATION -->
+                <Tab text="Performance evaluation">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children></AnchorPane>
    </center>
    <top>
       <MenuBar fx:id="mb_top" prefHeight="16.0" prefWidth="507.0" BorderPane.alignment="CENTER">
@@ -26,13 +93,4 @@
         </menus>
       </MenuBar>
    </top>
-   <left>
-      <VBox fx:id="vb_menu" maxWidth="70" prefHeight="200.0" spacing="100" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="160.0" prefWidth="150.0" styleClass="menuButton" text="General information" wrapText="true" />
-            <Button mnemonicParsing="false" prefHeight="160.0" prefWidth="70.0" styleClass="menuButton" text="Issue statistics" wrapText="true" />
-            <Button mnemonicParsing="false" prefHeight="160.0" prefWidth="70.0" styleClass="menuButton" text="Data browser" wrapText="true" />
-         </children>
-      </VBox>
-   </left>
 </BorderPane>
