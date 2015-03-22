@@ -30,8 +30,6 @@ public class ProjectTask {
 		this.taskDescription = taskDescription;
 	}
 
-
-
 	public Long getId() {
 		return id;
 	}

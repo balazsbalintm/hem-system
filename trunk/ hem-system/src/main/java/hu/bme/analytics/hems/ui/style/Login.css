@@ -1,0 +1,139 @@
+.background {
+    -fx-background-image: url('CoarseGrid.png');
+    -fx-background-repeat: repeat;
+    -fx-background-color:
+        linear-gradient(#38424b 0.0%, #1f2429 20.0%, #191d22 100.0%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(114.0,131.0,148.0,0.9), rgba(255.0,255.0,255.0,0.0));
+}
+
+
+.top-segment {
+    -fx-background-color: rgba(255.0, 255.0, 255.0, 0.05);
+    -fx-border-color: 
+        transparent transparent rgba(255.0, 255.0, 255.0, 0.08) transparent,
+        transparent transparent rgba(0.0, 0.0, 0.0, 0.5) transparent;
+    -fx-border-width: 1.0, 1.5;
+    -fx-border-insets: -1.0, 0.0; 
+}
+
+.label {
+    -fx-font-family: "Segoe WP";
+    -fx-font-size: 14.0;
+    -fx-text-fill: rgba(255.0, 255.0, 255.0, 0.4);
+    -fx-effect: dropshadow( one-pass-box , rgba(0.0, 0.0, 0.0, 0.6), 0.0, 0.0 , 0.0 , 1.0 );
+
+}
+ 
+
+.profileTitle {
+    -fx-font-size: 18.0;
+}
+
+ 
+
+.hyperlink {
+    -fx-font-family: "Segoe WP";
+    -fx-font-size: 18.0;
+    -fx-text-fill: rgba(255.0, 255.0, 255.0, 0.4);
+    -fx-effect: dropshadow( one-pass-box , rgba(0.0, 0.0, 0.0, 0.6), 0.0, 0.0 , 0.0 , 1.0 );
+    -fx-border-width: 0.0;
+
+}
+
+ 
+.hyperlink:focused {
+    -fx-text-fill: rgba(255.0, 255.0, 255.0, 0.6);
+}
+
+.check-box .box {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.1),
+        rgba(0.0, 0.0, 0.0, 1.0),
+        -fx-outer-border,
+        -fx-inner-border,
+        -fx-body-color;
+    -fx-background-insets: 0.0 -1.6 -2.0 -1.6, -1.4, 0.0, 1.0, 2.0;
+
+}
+
+
+.check-box:focused .box {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.15),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        -fx-outer-border,
+        -fx-inner-border,
+        white;
+}
+
+ 
+
+.button .text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0.0, 0.0, 0.0, 0.8), 0.0, 0.0 , 0.0 , -1.0 );
+}
+
+ 
+
+.button {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#242a2e, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+    -fx-background-radius: 7.0, 6.0, 5.0, 4.0, 3.0, 5.0;
+    -fx-background-insets: -3.0 -3.0 -4.0 -3.0, -3.0, 0.0, 1.0, 2.0, 0.0;
+    -fx-font-family: "Segoe WP";
+    -fx-text-fill: white;
+    -fx-font-size: 26.0;
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-padding: 10.0 20.0 10.0 20.0;
+}
+
+ 
+
+.button:focused, .button:hover {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#3f4950, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+
+}
+
+ 
+
+.text-field, .text-area {
+    -fx-font-size: 18.0;
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.3),
+        linear-gradient(rgba(0.0, 0.0, 0.0, 0.5), rgba(0.0, 0.0, 0.0, 0.8) 50.0%),
+        rgb(218.0, 226.0, 224.0);
+    -fx-background-insets: 0.0 0.0 -1.0 0.0, 0.0, 1.5;
+    -fx-background-radius: 6.0, 5.0, 4.0;
+    -fx-padding: 6.0 10.0 4.0 10.0;
+    -fx-effect: innershadow( gaussian, rgba(0.0, 0.0, 0.0, 0.8), 5.0, 0.0, 0.0, 2.0 );
+    -fx-font-family: "Segoe WP";
+}
+
+ 
+
+.text-area {
+    -fx-padding: 6.0 5.0 6.0 5.0;
+}
+
+ 
+
+.text-field:focused, .text-area:focused {
+    -fx-prompt-text-fill: rgb(128.0,128.0,128.0);
+    -fx-background-color: rgba(235.0, 235.0, 235.0, 0.5),
+        rgba(0.0, 0.0, 0.0, 0.4),
+        rgb(255.0, 255.0, 255.0);
+
+}

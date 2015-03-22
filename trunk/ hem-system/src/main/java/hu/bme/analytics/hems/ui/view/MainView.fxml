@@ -2,7 +2,7 @@
 
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="200.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml" fx:controller="hu.bme.analytics.hems.ui.controller.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="hu.bme.analytics.hems.ui.controller.MainController">
   <children>
     <StackPane fx:id="mainHolder" VBox.vgrow="ALWAYS" />
   </children>
