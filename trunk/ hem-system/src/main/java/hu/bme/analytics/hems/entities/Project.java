@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,8 +20,13 @@ public class Project {
 	private Long id;
 	private String projectName;
 
-	@OneToMany
+	@OneToMany(fetch= FetchType.EAGER)
 	private Map<Employee, TaskSet> m_assignments = new HashMap<Employee, TaskSet>();
+	
+	//ADDED things...
+	private double qualityImportance = 0.9;
+	private double timeImportance = 0.1;
+	//added things ended...
 	
 	protected Project() {
 		
@@ -61,6 +67,14 @@ public class Project {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public Map<Employee, TaskSet> getM_assignments() {
+		return m_assignments;
+	}
+
+	public void setM_assignments(Map<Employee, TaskSet> m_assignments) {
+		this.m_assignments = m_assignments;
 	}
 
 }

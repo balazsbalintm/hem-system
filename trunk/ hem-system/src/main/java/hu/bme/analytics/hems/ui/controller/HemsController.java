@@ -2,7 +2,9 @@ package hu.bme.analytics.hems.ui.controller;
 
 import hu.bme.analytics.hems.App;
 import hu.bme.analytics.hems.entities.Employee;
+import hu.bme.analytics.hems.entities.PersonDistanceResult;
 import hu.bme.analytics.hems.entities.ProjectTask;
+import hu.bme.analytics.hems.ui.rapidminer.ModelCaller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,8 +15,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import org.springframework.stereotype.Component;
 
@@ -23,6 +28,8 @@ public class HemsController {
 
 	@FXML private TableView<Employee> tbl_persons;
 	@FXML private TableView<ProjectTask> tbl_tasks;
+	@FXML private TextField tf_candidateSearch;
+	@FXML private GridPane g_cadidateResult;
 	
 	public HemsController() {
 		
@@ -83,6 +90,29 @@ public class HemsController {
 		tbl_tasks.setItems(lfx_tasks);
 		
 		tbl_tasks.getColumns().addAll(taskIdCol,taskNameCol,taskPositionCol, taskDescCol);
+	}
+	
+	public void searchCandidateClickHandler(MouseEvent me) {
+		List<PersonDistanceResult> results = ModelCaller.executeCandidateSearchModel( tf_candidateSearch.getText() );
+		
+		
+		
+		g_cadidateResult.getChildren().clear();
+		
+		Text hdr_sim = new Text("Similarity");
+		hdr_sim.getStyleClass().add("header");
+		
+		Text hdr_name = new Text("Name");
+		hdr_name.getStyleClass().add("header");
+		
+		g_cadidateResult.addRow(0, hdr_sim, hdr_name);
+		
+		int i = 1;
+		for (PersonDistanceResult actualRes : results) {
+			Employee emp = App.get().empRep.findOne( (long)actualRes.getPersonId() );
+			g_cadidateResult.addRow(i, new Text(Double.toString( Math.round( actualRes.getDistance()*100.0)/100.0 )), new Text(emp.getFirstName() + " " + emp.getLastName()) );
+			i++;
+		}
 	}
 	
 }
