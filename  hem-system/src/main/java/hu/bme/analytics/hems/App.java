@@ -1,6 +1,7 @@
 package hu.bme.analytics.hems;
 
 import hu.bme.analytics.hems.entities.Employee;
+import hu.bme.analytics.hems.entities.EntityUtil;
 import hu.bme.analytics.hems.entities.Project;
 import hu.bme.analytics.hems.entities.ProjectTask;
 import hu.bme.analytics.hems.entities.TaskSet;
@@ -31,7 +32,6 @@ public class App extends AbstractJavaFxApplicationSupport {
 		return instance;
 	} 
 	
-	
 	@Value("${app.ui.title}")
 	private String windowTitle;
 
@@ -49,36 +49,20 @@ public class App extends AbstractJavaFxApplicationSupport {
 	public ProjectTaskRepository prjTaskRepository;
 	@Autowired
 	public TaskSetRepository taskSetRepository;
+	@Autowired
+	public EntityUtil entityUtil;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		//set the singleton instance
 		instance = this;
-		
+
 		//decide if data upload mode or normal production
 		if (!IS_DATA_UPLOAD_MODE) {
 			stage.setScene(createScene(loadMainPane()));
 			stage.setTitle(windowTitle);
 			stage.show();
 
-			/*
-			 * stage.setTitle(windowTitle); stage.setScene(new
-			 * Scene(mainLayout)); stage.setResizable(true);
-			 * stage.centerOnScreen(); stage.show();
-			 * 
-			 * repository.save(new Employee("Jack", "Bauer"));
-			 * repository.save(new Employee("Chloe", "O'Brian"));
-			 * repository.save(new Employee("Kim", "Bauer"));
-			 * repository.save(new Employee("David", "Palmer"));
-			 * repository.save(new Employee("Michelle", "Dessler"));
-			 * 
-			 * // fetch all customers
-			 * System.out.println("Customers found with findAll():");
-			 * System.out.println("-------------------------------"); for
-			 * (Employee emp : repository.findAll()) {
-			 * mainLayout.getHelloWorldComponent().addLabelToComponent
-			 * (emp.toString()); }
-			 */
 		} else {
 			DataCreator();
 		}

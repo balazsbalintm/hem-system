@@ -74,7 +74,36 @@
         radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
 }
 
+#cadidateResult {
+	-fx-background-radius: 5.0;
+    -fx-background-insets: 0.0 5.0 0.0 5.0;
+    -fx-background-color: rgba(009, 010, 012, 0.2);
+    -fx-padding: 10;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    
+	-fx-border-color: #090a0c;
+    -fx-border-insets: 5;
+	-fx-border-width: 1;
+    -fx-border-style: dashed;
+    
+    -fx-font-family: "Segoe WP";
+	-fx-text-fill: #ffffff;
+}
 
+
+#cadidateResult .header {
+    -fx-font-family: "Segoe WP";
+	-fx-text-fill: #ffffff;
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;
+}
+
+#cadidateResult .body {
+	-fx-font-family: "Segoe WP";
+	-fx-text-fill: #ffffff;
+	-fx-font-size: 12px;
+}
 
 /* *****TAB STLYING ***** */
 

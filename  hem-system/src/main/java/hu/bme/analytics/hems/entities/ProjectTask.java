@@ -1,5 +1,7 @@
 package hu.bme.analytics.hems.entities;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,14 @@ public class ProjectTask {
 	private Long id;
 	private String taskName;
 	private String taskPosition;
+	
+	//ADDED THINGS
+	private TaskStates state = TaskStates.OPEN;
+	private Date plannedEndDate;
+	private Date actualEndDate;
+	
+	private double qualityInPercentage;
+	//ENDED...
 	
 	@Lob
 	@Column( length = 100000 )
