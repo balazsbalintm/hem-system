@@ -20,25 +20,39 @@
                            <content>
                               <GridPane>
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="500.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints maxHeight="50" prefHeight="50.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
                                   
                                   <RowConstraints maxHeight="50" prefHeight="50.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                                  
+                                  <RowConstraints maxHeight="50" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                                  
+                                  <RowConstraints maxHeight="50" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
                                   
                                 </rowConstraints>
                                  <children>
                                     <Label text="Person's list" GridPane.rowIndex="0" />
                                     <TableView fx:id="tbl_persons" GridPane.rowIndex="1"></TableView>
                                     <Button mnemonicParsing="false" onMouseClicked="#personDataDownloadClickHandler" text="Download Persons" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                   
+                                   	<Label text="Project list" GridPane.rowIndex="2" />
+                                    <TableView fx:id="tbl_projects" GridPane.rowIndex="3"></TableView>
+                                    <Button mnemonicParsing="false" onMouseClicked="#projectDataDownloadClickHandler" text="Download Projects" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     
-                                    <Label text="Task list" GridPane.rowIndex="2" />
-                                    <TableView fx:id="tbl_tasks" GridPane.rowIndex="3"></TableView>
-                                    <Button mnemonicParsing="false" onMouseClicked="#taskDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Task list" GridPane.rowIndex="4" />
+                                    <TableView fx:id="tbl_tasks" GridPane.rowIndex="5"></TableView>
+                                    <Button mnemonicParsing="false" onMouseClicked="#taskDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    
+                                    <Label text="Assignment list" GridPane.rowIndex="6" />
+                                    <TableView fx:id="tbl_assignments" GridPane.rowIndex="7"></TableView>
+                                    <Button mnemonicParsing="false" onMouseClicked="#assignmentDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                  </children>
                               </GridPane>
                            </content>
@@ -97,12 +111,12 @@
         <menus>
           <Menu mnemonicParsing="false" styleClass="menuitem" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="Close" />
+              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="Close" onAction="#closeButtonClickHandler" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" styleClass="menuitem" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="About" />
+              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="About" onAction="#aboutButtonClickHandler"/>
             </items>
           </Menu>
         </menus>
