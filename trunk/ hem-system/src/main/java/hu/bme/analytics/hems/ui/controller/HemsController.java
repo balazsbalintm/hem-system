@@ -2,16 +2,22 @@ package hu.bme.analytics.hems.ui.controller;
 
 import hu.bme.analytics.hems.App;
 import hu.bme.analytics.hems.entities.Employee;
+import hu.bme.analytics.hems.entities.EmployeeTask;
 import hu.bme.analytics.hems.entities.PersonDistanceResult;
+import hu.bme.analytics.hems.entities.Project;
 import hu.bme.analytics.hems.entities.ProjectTask;
+import hu.bme.analytics.hems.entities.TaskSet;
+import hu.bme.analytics.hems.ui.components.AboutScene;
 import hu.bme.analytics.hems.ui.rapidminer.ModelCaller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,6 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 
 import org.springframework.stereotype.Component;
 
@@ -27,13 +34,13 @@ import org.springframework.stereotype.Component;
 public class HemsController {
 
 	@FXML private TableView<Employee> tbl_persons;
+	@FXML private TableView<Project> tbl_projects;
 	@FXML private TableView<ProjectTask> tbl_tasks;
+	@FXML private TableView<EmployeeTask> tbl_assignments;
 	@FXML private TextField tf_candidateSearch;
 	@FXML private GridPane g_cadidateResult;
 	
-	public HemsController() {
-		
-	}
+	public HemsController() {}
 	
 	
 	public void personDataDownloadClickHandler(MouseEvent me) {
@@ -92,10 +99,84 @@ public class HemsController {
 		tbl_tasks.getColumns().addAll(taskIdCol,taskNameCol,taskPositionCol, taskDescCol);
 	}
 	
+	public void projectDataDownloadClickHandler(MouseEvent me) {
+		Iterator<Project> it_projects = App.get().projectRep.findAll().iterator();
+		List<Project> l_projects = new ArrayList<Project>();
+		
+		while(it_projects.hasNext()) {
+			l_projects.add(it_projects.next());
+		}
+		
+		TableColumn<Project,Long> projectIdCol = new TableColumn<Project,Long>();
+		projectIdCol.setText("Project id");
+		projectIdCol.setCellValueFactory(new PropertyValueFactory<Project,Long>("id"));
+		
+		TableColumn<Project,String> taskNameCol = new TableColumn<Project,String>();
+		taskNameCol.setText("Project name");
+		taskNameCol.setCellValueFactory(new PropertyValueFactory<Project,String>("projectName"));
+		
+		TableColumn<Project,Double> taskQualityImpCol = new TableColumn<Project,Double>();
+		taskQualityImpCol.setText("Quality importance");
+		taskQualityImpCol.setCellValueFactory(new PropertyValueFactory<Project,Double>("qualityImportance"));
+		
+		TableColumn<Project,Double> taskTimeImpCol = new TableColumn<Project,Double>();
+		taskTimeImpCol.setText("Time importance");
+		taskTimeImpCol.setCellValueFactory(new PropertyValueFactory<Project,Double>("timeImportance"));
+		
+		ObservableList<Project> lfx_projects = FXCollections.observableList(l_projects);
+		tbl_projects.setItems(lfx_projects);
+		
+		tbl_projects.getColumns().addAll(projectIdCol, taskNameCol, taskQualityImpCol, taskTimeImpCol);
+	}
+	
+	public void assignmentDataDownloadClickHandler(MouseEvent me) {
+		Iterator<Project> it_projects = App.get().projectRep.findAll().iterator();
+		List<EmployeeTask> l_employeeTasks = new ArrayList<EmployeeTask>();
+		
+		while(it_projects.hasNext()) {
+			Project project = it_projects.next();
+			Map<Employee, TaskSet> assignments = project.getM_assignments();
+			
+			Iterator<Employee> it_assKeys = assignments.keySet().iterator();
+			while (it_assKeys.hasNext()) {
+				Employee emp = it_assKeys.next(); 
+				TaskSet taskSet = assignments.get(emp);
+				Iterator<ProjectTask> it_tasks = taskSet.getTasks().iterator();
+				
+				while(it_tasks.hasNext()) {
+					ProjectTask task = it_tasks.next();
+					
+					l_employeeTasks.add(new EmployeeTask(emp.getId(), emp.getFirstName() + " " + emp.getLastName(), task.getId(), task.getTaskName()));
+				}
+			}
+		}
+		
+		
+		
+		TableColumn<EmployeeTask,Long> empIdCol = new TableColumn<EmployeeTask,Long>();
+		empIdCol.setText("Employee id");
+		empIdCol.setCellValueFactory(new PropertyValueFactory<EmployeeTask,Long>("empId"));
+		
+		TableColumn<EmployeeTask,String> empNameCol = new TableColumn<EmployeeTask,String>();
+		empNameCol.setText("Employee name");
+		empNameCol.setCellValueFactory(new PropertyValueFactory<EmployeeTask,String>("empName"));
+		
+		TableColumn<EmployeeTask,Long> taskQualityImpCol = new TableColumn<EmployeeTask,Long>();
+		taskQualityImpCol.setText("Task Id");
+		taskQualityImpCol.setCellValueFactory(new PropertyValueFactory<EmployeeTask,Long>("taskId"));
+		
+		TableColumn<EmployeeTask,Long> taskTimeImpCol = new TableColumn<EmployeeTask,Long>();
+		taskTimeImpCol.setText("Task name");
+		taskTimeImpCol.setCellValueFactory(new PropertyValueFactory<EmployeeTask,Long>("taskName"));
+		
+		ObservableList<EmployeeTask> lfx_empTasks = FXCollections.observableList(l_employeeTasks);
+		tbl_assignments.setItems(lfx_empTasks);
+		
+		tbl_assignments.getColumns().addAll(empIdCol, empNameCol, taskQualityImpCol, taskTimeImpCol);
+	}
+	
 	public void searchCandidateClickHandler(MouseEvent me) {
 		List<PersonDistanceResult> results = ModelCaller.executeCandidateSearchModel( tf_candidateSearch.getText() );
-		
-		
 		
 		g_cadidateResult.getChildren().clear();
 		
@@ -115,4 +196,20 @@ public class HemsController {
 		}
 	}
 	
+	public void closeButtonClickHandler(ActionEvent evt) {
+		System.exit(0);
+	}
+	
+	private Popup popup = null;
+	public void aboutButtonClickHandler(ActionEvent evt) {
+		if(popup == null)
+			popup = new Popup();
+		
+		if(!popup.isShowing()){
+			popup.setX(300);
+		    popup.setY(200);
+			popup.getContent().addAll(new AboutScene(popup));
+			popup.show(App.get().mainStage);
+		}
+	}
 }

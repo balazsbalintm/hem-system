@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ProjectTask {
@@ -17,13 +18,11 @@ public class ProjectTask {
 	private String taskName;
 	private String taskPosition;
 	
-	//ADDED THINGS
-	private TaskStates state = TaskStates.OPEN;
+	@ManyToOne(targetEntity=TaskStates.class)
+	private TaskStates state;
 	private Date plannedEndDate;
 	private Date actualEndDate;
-	
 	private double qualityInPercentage;
-	//ENDED...
 	
 	@Lob
 	@Column( length = 100000 )
@@ -38,6 +37,19 @@ public class ProjectTask {
 		this.taskName = taskName;
 		this.taskPosition = taskPosition;
 		this.taskDescription = taskDescription;
+	}
+	
+	public ProjectTask(String taskName, String taskPosition, String taskDescription, TaskStates state,
+			Date plannedEndDate, Date actualEndDate,
+			double qualityInPercentage) {
+		super();
+		this.taskName = taskName;
+		this.taskDescription = taskDescription;
+		this.taskPosition = taskPosition;
+		this.state = state;
+		this.plannedEndDate = plannedEndDate;
+		this.actualEndDate = actualEndDate;
+		setQualityInPercentage(qualityInPercentage);		
 	}
 
 	public Long getId() {
@@ -70,6 +82,43 @@ public class ProjectTask {
 
 	public void setTaskPosition(String taskPosition) {
 		this.taskPosition = taskPosition;
+	}
+
+	public TaskStates getState() {
+		return state;
+	}
+
+	public void setState(TaskStates state) {
+		this.state = state;
+	}
+
+	public Date getPlannedEndDate() {
+		return plannedEndDate;
+	}
+
+	public void setPlannedEndDate(Date plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
+	}
+
+	public Date getActualEndDate() {
+		return actualEndDate;
+	}
+
+	public void setActualEndDate(Date actualEndDate) {
+		this.actualEndDate = actualEndDate;
+	}
+
+	public double getQualityInPercentage() {
+		return qualityInPercentage;
+	}
+	
+	public void setQualityInPercentage(double qualityInPercentage) {
+		if(qualityInPercentage > 100)
+			this.qualityInPercentage = 100;
+		else if (qualityInPercentage < 0) 
+			this.qualityInPercentage = 0;
+		else
+			this.qualityInPercentage = qualityInPercentage;
 	}
 	
 }
