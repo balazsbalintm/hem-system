@@ -1,5 +1,7 @@
 package hu.bme.analytics.hems.ui.rapidminer;
 
+import hu.bme.analytics.hems.HemsProps;
+import hu.bme.analytics.hems.entities.EntityUtil;
 import hu.bme.analytics.hems.entities.PersonDistanceResult;
 
 import java.io.File;
@@ -21,19 +23,32 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.tools.XMLException;
 
 public class ModelCaller {
+	//STATIC INIT
+	static {
+		PATH_MODEL = HemsProps.get().getProperty(HemsProps.RM_MODELPATH);
+		PATH_CSV = HemsProps.get().getProperty(HemsProps.RM_CSVPATH);
+	}
+	
+	//CONSTANTS
 	private static String PERSON_ID = "personId";
 	private static String ID = "id";
 	private static String REQUEST = "request";
-	private static String DISTANCE = "distance";	
+	private static String DISTANCE = "distance";
+	
+	//MODEL+CSV PATH
+	private static String PATH_MODEL;
+	private static String PATH_CSV;
 	
 	private static Map<Double, Double> m_reqIdAndResults = new HashMap<Double, Double>();
 	
 	public static List<PersonDistanceResult> executeCandidateSearchModel(String searchText) {
 		try {
+			EntityUtil.toCsvEmpAndTasks();
+			
 			RapidMiner.init();
-			Process process = RapidMiner.readProcessFile(new File("C:\\Users\\Balint\\Desktop\\hrManagmentProcess"));
+			Process process = RapidMiner.readProcessFile(new File(PATH_MODEL));
 	
-	
+			process.getOperator("input_csv").setParameter("csv_file", PATH_CSV);
 			process.getOperator("search_expression").setParameter("text", searchText);
 	
 			List<PersonDistanceResult> l_results = new ArrayList<PersonDistanceResult>();

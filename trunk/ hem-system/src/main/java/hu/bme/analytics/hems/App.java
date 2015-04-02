@@ -1,12 +1,14 @@
 package hu.bme.analytics.hems;
 
 import hu.bme.analytics.hems.entities.Employee;
-import hu.bme.analytics.hems.entities.EntityUtil;
+import hu.bme.analytics.hems.entities.PerfStat;
 import hu.bme.analytics.hems.entities.Project;
 import hu.bme.analytics.hems.entities.ProjectTask;
 import hu.bme.analytics.hems.entities.TaskSet;
 import hu.bme.analytics.hems.entities.TaskStates;
 import hu.bme.analytics.hems.entities.repositories.EmployeeRepository;
+import hu.bme.analytics.hems.entities.repositories.PerfStatRepository;
+import hu.bme.analytics.hems.entities.repositories.PerfTextRepository;
 import hu.bme.analytics.hems.entities.repositories.ProjectRepository;
 import hu.bme.analytics.hems.entities.repositories.ProjectTaskRepository;
 import hu.bme.analytics.hems.entities.repositories.TaskSetRepository;
@@ -38,7 +40,9 @@ public class App extends AbstractJavaFxApplicationSupport {
 	
 	@Value("${app.ui.title}")
 	private String windowTitle;
-
+	@Value("${app.properties.path}")
+	private String hemsPropsPath;
+	
 	public Stage mainStage;
 	
 	private static String MAIN_VIEW_LOC = "./ui/view/MainView.fxml";
@@ -50,22 +54,25 @@ public class App extends AbstractJavaFxApplicationSupport {
 	@Autowired
 	public EmployeeRepository empRep;
 	@Autowired
-	public ProjectRepository projectRep;
+	public ProjectRepository prjRep;
 	@Autowired
-	public ProjectTaskRepository prjTaskRepository;
+	public ProjectTaskRepository prjTaskRep;
 	@Autowired
-	public TaskSetRepository taskSetRepository;
+	public TaskSetRepository taskSetRep;
 	@Autowired
 	public TaskStatesRepository taskStatesRep;
 	@Autowired
-	public EntityUtil entityUtil;
+	public PerfTextRepository perfTextRep;
+	@Autowired
+	public PerfStatRepository perfStatRep;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		//set the singleton instance
 		instance = this;
 		mainStage = stage;
-
+		HemsProps.init(hemsPropsPath);
+		
 		//decide if data upload mode or normal production
 		if (!IS_DATA_UPLOAD_MODE) {
 			stage.setScene(createScene(loadMainPane()));
@@ -143,21 +150,33 @@ public class App extends AbstractJavaFxApplicationSupport {
 			taskStatesRep.save(task2State);
 			taskStatesRep.save(task3State);
 			
-			prjTaskRepository.save(task1);
-			prjTaskRepository.save(task2);
-			prjTaskRepository.save(task3);
+			prjTaskRep.save(task1);
+			prjTaskRep.save(task2);
+			prjTaskRep.save(task3);
 	
+			
 			// creation of project
-			Project prj1 = new Project("Building modernization", 0.9, 0.1);
+			Project prj1 = new Project("Building modernization", sdf.parse("01-01-2015"), sdf.parse("01-09-2015"), 0.9, 0.1);
 			TaskSet tskSet1 = prj1.assignTaskToEmployee(emp1, task1);
 			TaskSet tskSet2 = prj1.assignTaskToEmployee(emp2, task2);
 			TaskSet tskSet3 = prj1.assignTaskToEmployee(emp3, task3);
 	
-			taskSetRepository.save(tskSet1);
-			taskSetRepository.save(tskSet2);
-			taskSetRepository.save(tskSet3);
+			taskSetRep.save(tskSet1);
+			taskSetRep.save(tskSet2);
+			taskSetRep.save(tskSet3);
 	
-			projectRep.save(prj1);
+			prjRep.save(prj1);
+			
+			
+			//creation of Performance statistics
+			PerfStat emp1PerfStat = new PerfStat(prj1, emp1, 10, 5, 0, 100);
+			PerfStat emp2PerfStat = new PerfStat(prj1, emp2, 5, 15, 6, 170);
+			PerfStat emp3PerfStat = new PerfStat(prj1, emp3, 0, 6, 3, 20);
+			
+			perfStatRep.save(emp1PerfStat);
+			perfStatRep.save(emp2PerfStat);
+			perfStatRep.save(emp3PerfStat);
+			
 			System.out.println("Upload finished");
 		} catch (ParseException e) {
 			e.printStackTrace();

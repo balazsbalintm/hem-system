@@ -1,6 +1,7 @@
 package hu.bme.analytics.hems.entities;
 
 import hu.bme.analytics.hems.App;
+import hu.bme.analytics.hems.HemsProps;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,22 +11,16 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-@Component
-@Scope(value = "singleton")
 public class EntityUtil {
 	
-	@Value("${app.rm.modelpath}")
-	private String modelPath;
+	static {
+		outputCsvPath = HemsProps.get().getProperty(HemsProps.RM_CSVPATH);
+	}
 	
-	@Value("${app.rm.csvpath}")
-	private String outputCsvPath;
+	private static String outputCsvPath;
 	
-	public void toCsvEmpAndTasks() {
-		Iterator<Project> it_allProjects = App.get().projectRep.findAll().iterator();
+	public static void toCsvEmpAndTasks() {
+		Iterator<Project> it_allProjects = App.get().prjRep.findAll().iterator();
 		
 		CsvCreator csvCreator = new CsvCreator(outputCsvPath);
 		//CSV HEADER STRUCTURE
@@ -60,8 +55,7 @@ public class EntityUtil {
 	
 	
 	/*CSV builder*/
-	
-	private class CsvCreator {
+	private static class CsvCreator {
 		private File file;
 		
 		private StringBuilder sb_csvFile = new StringBuilder();

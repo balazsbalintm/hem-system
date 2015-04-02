@@ -1,5 +1,6 @@
 package hu.bme.analytics.hems.entities;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class Project {
 	@OneToMany(fetch= FetchType.EAGER)
 	private Map<Employee, TaskSet> m_assignments = new HashMap<Employee, TaskSet>();
 	
+	private Date start_date;
+	private Date end_date;
 	private double qualityImportance = 0.9;
 	private double timeImportance = 0.1;
 	
@@ -31,13 +34,19 @@ public class Project {
 		
 	}
 
-	
-
-	public Project(String projectName, double qualityImportance,
+	public Project(String projectName, Date start_date, Date end_date, double qualityImportance,
 			double timeImportance) {
 		super();
 		this.projectName = projectName;
+		this.start_date = start_date;
 		
+		//if end date < start date, then make end date the start date
+		if(end_date.compareTo(start_date) == -1)
+			this.end_date = start_date;
+		else
+			this.end_date = end_date;
+		
+		//check if the sum of quality and time ration is one
 		try {
 			checkQualityAndTimeImp(qualityImportance, timeImportance);
 		} catch (InvalidPreferencesFormatException e) {
@@ -136,5 +145,25 @@ public class Project {
 			this.timeImportance = 0.5;
 		}
 	}
+
+	public Date getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+
+	public Date getEnd_date() {
+		return end_date;
+	}
+
+	public void setEnd_date(Date end_date) {
+		this.end_date = end_date;
+	}
 	
+	@Override
+	public String toString() {
+		return id + " " + projectName;
+	}
 }

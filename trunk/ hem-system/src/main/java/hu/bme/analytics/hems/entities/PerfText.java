@@ -24,9 +24,8 @@ public class PerfText {
 	
 	protected PerfText() {}
 
-	public PerfText(Long id, Project project, Employee employee, String perfEvaluationText) {
+	public PerfText(Project project, Employee employee, String perfEvaluationText) {
 		super();
-		this.id = id;
 		this.project = project;
 		this.employee = employee;
 		this.perfEvaluationText = perfEvaluationText;
