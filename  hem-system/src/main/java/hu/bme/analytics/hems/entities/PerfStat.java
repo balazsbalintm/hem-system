@@ -17,8 +17,9 @@ public class PerfStat {
 	@ManyToOne(targetEntity=Project.class, fetch=FetchType.EAGER)
 	private Project project;
 	
-	@ManyToOne(targetEntity=Project.class, fetch=FetchType.EAGER)
+	@ManyToOne(targetEntity=Employee.class, fetch=FetchType.EAGER)
 	private Employee employee;
+	
 	private Integer nrOfOpenTasks;
 	private Integer nrOfClosedTasks;
 	private Integer nrOfInprogressTasks;
@@ -31,6 +32,20 @@ public class PerfStat {
 	public PerfStat(Project project, Employee employee) {
 		this.project = project;
 		this.employee = employee;
+	}
+	
+	
+
+	public PerfStat(Project project, Employee employee, Integer nrOfOpenTasks,
+			Integer nrOfClosedTasks, Integer nrOfInprogressTasks,
+			Integer spentTimeInH) {
+		super();
+		this.project = project;
+		this.employee = employee;
+		this.nrOfOpenTasks = nrOfOpenTasks;
+		this.nrOfClosedTasks = nrOfClosedTasks;
+		this.nrOfInprogressTasks = nrOfInprogressTasks;
+		this.spentTimeInH = spentTimeInH;
 	}
 
 	public Long getId() {
@@ -87,6 +102,10 @@ public class PerfStat {
 
 	public void setSpentTimeInH(Integer spentTimeInH) {
 		this.spentTimeInH = spentTimeInH;
-	}	
+	}
+	
+	public int getSumTasks(){
+		return nrOfClosedTasks + nrOfInprogressTasks + nrOfOpenTasks;
+	}
 	
 }

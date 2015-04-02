@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.chart.PieChart?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" styleClass="background" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.bme.analytics.hems.ui.controller.HemsController">
    <center>
@@ -39,19 +41,19 @@
                                 </rowConstraints>
                                  <children>
                                     <Label text="Person's list" GridPane.rowIndex="0" />
-                                    <TableView fx:id="tbl_persons" GridPane.rowIndex="1"></TableView>
+                                    <TableView fx:id="tbl_persons" GridPane.rowIndex="1" />
                                     <Button mnemonicParsing="false" onMouseClicked="#personDataDownloadClickHandler" text="Download Persons" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                    
                                    	<Label text="Project list" GridPane.rowIndex="2" />
-                                    <TableView fx:id="tbl_projects" GridPane.rowIndex="3"></TableView>
+                                    <TableView fx:id="tbl_projects" GridPane.rowIndex="3" />
                                     <Button mnemonicParsing="false" onMouseClicked="#projectDataDownloadClickHandler" text="Download Projects" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     
                                     <Label text="Task list" GridPane.rowIndex="4" />
-                                    <TableView fx:id="tbl_tasks" GridPane.rowIndex="5"></TableView>
+                                    <TableView fx:id="tbl_tasks" GridPane.rowIndex="5" />
                                     <Button mnemonicParsing="false" onMouseClicked="#taskDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     
                                     <Label text="Assignment list" GridPane.rowIndex="6" />
-                                    <TableView fx:id="tbl_assignments" GridPane.rowIndex="7"></TableView>
+                                    <TableView fx:id="tbl_assignments" GridPane.rowIndex="7" />
                                     <Button mnemonicParsing="false" onMouseClicked="#assignmentDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                  </children>
                               </GridPane>
@@ -60,9 +62,35 @@
                      </content>
                 </Tab>
 <!--            ISSUE STATISTICS -->
-                <Tab text="Issue statistics">
+                <Tab text="Issue statistics" fx:id="tab_issueStats" onSelectionChanged="#issueStatsSelectedHandler">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <BorderPane prefHeight="300.0" prefWidth="300.0">
+                         <top>
+                            <GridPane BorderPane.alignment="CENTER">
+                              <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              </columnConstraints>
+                              <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              </rowConstraints>
+                               <children>
+                                  <Label text="Project" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                  <Label text="Employee" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                  <ComboBox fx:id="cb_issueStat_project" prefWidth="150.0" GridPane.columnIndex="1" onAction="#cbIssueStatProjectChangeHandler"/>
+                                  <ComboBox fx:id="cb_issueStat_employee" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#cbIssueStatEmployeeChangeHandler" />
+                               </children>
+                            </GridPane>
+                         </top>
+                         <center>
+                         	<VBox fx:id="vb_issueStat" visible="false">
+                         		<Label text="Overall project data"/>
+                         		<PieChart fx:id="pc_prjOverall"/>
+                         	</VBox>
+                         </center>
+                      </BorderPane>
                   </content>
                 </Tab>
 <!--            CANDIDATE SEARCHER -->
@@ -72,8 +100,8 @@
                            <top>
                               <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <TextField fx:id="tf_candidateSearch"/>
-                                    <Button mnemonicParsing="false" text="Search" onMouseClicked="#searchCandidateClickHandler"/>
+                                    <TextField fx:id="tf_candidateSearch" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#searchCandidateClickHandler" text="Search" />
                                  </children>
                               </HBox>
                            </top>
@@ -97,9 +125,35 @@
                      </content>
                 </Tab>
 <!--            PERFORMANCE EVALUATION -->
-                <Tab text="Performance evaluation">
+                <Tab fx:id="tab_perfEval" text="Performance evaluation" onSelectionChanged="#performanceEvaluationSelectedHandler">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <BorderPane prefHeight="300.0" prefWidth="300.0">
+                             <top>
+                                <GridPane BorderPane.alignment="CENTER">
+                                  <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                   <children>
+                                      <Label text="Project" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                      <Label text="Employee" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                      <ComboBox fx:id="cb_perfEval_project" prefWidth="150.0" GridPane.columnIndex="1" onAction="#cbPerfEvalProjectChangeHandler"/>
+                                      <ComboBox fx:id="cb_perfEval_employee" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#cbPerfEvalEmployeeChangeHandler" />
+                                   </children>
+                                </GridPane>
+                             </top>
+                             <center>
+                                <TextArea fx:id="ta_perfText" prefHeight="200.0" prefWidth="200.0" wrapText="true" BorderPane.alignment="CENTER" />
+                             </center>
+                             <bottom>
+                                <Button mnemonicParsing="false" text="Save evaluation!" BorderPane.alignment="CENTER" onMouseClicked="#saveEvalClickHandler"/>
+                             </bottom>
+                          </BorderPane>
                   </content>
                 </Tab>
               </tabs>
@@ -111,12 +165,12 @@
         <menus>
           <Menu mnemonicParsing="false" styleClass="menuitem" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="Close" onAction="#closeButtonClickHandler" />
+              <MenuItem mnemonicParsing="false" onAction="#closeButtonClickHandler" styleClass="menuitem" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" styleClass="menuitem" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" styleClass="menuitem" text="About" onAction="#aboutButtonClickHandler"/>
+              <MenuItem mnemonicParsing="false" onAction="#aboutButtonClickHandler" styleClass="menuitem" text="About" />
             </items>
           </Menu>
         </menus>

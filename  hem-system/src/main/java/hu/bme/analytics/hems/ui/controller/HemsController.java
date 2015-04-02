@@ -3,28 +3,43 @@ package hu.bme.analytics.hems.ui.controller;
 import hu.bme.analytics.hems.App;
 import hu.bme.analytics.hems.entities.Employee;
 import hu.bme.analytics.hems.entities.EmployeeTask;
+import hu.bme.analytics.hems.entities.PerfStat;
+import hu.bme.analytics.hems.entities.PerfText;
 import hu.bme.analytics.hems.entities.PersonDistanceResult;
 import hu.bme.analytics.hems.entities.Project;
 import hu.bme.analytics.hems.entities.ProjectTask;
 import hu.bme.analytics.hems.entities.TaskSet;
 import hu.bme.analytics.hems.ui.components.AboutScene;
-import hu.bme.analytics.hems.ui.rapidminer.ModelCaller;
+import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
@@ -33,12 +48,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class HemsController {
 
+	//general information
 	@FXML private TableView<Employee> tbl_persons;
 	@FXML private TableView<Project> tbl_projects;
 	@FXML private TableView<ProjectTask> tbl_tasks;
 	@FXML private TableView<EmployeeTask> tbl_assignments;
+	
+	//candidate search
 	@FXML private TextField tf_candidateSearch;
 	@FXML private GridPane g_cadidateResult;
+	
+	//performance evaluation
+	@FXML private Tab tab_perfEval;
+	@FXML private ComboBox<Project> cb_perfEval_project;
+	@FXML private ComboBox<Employee> cb_perfEval_employee;
+	@FXML private TextArea ta_perfText;
+	
+	//issue statistics
+	@FXML private Tab tab_issueStats;
+	@FXML private VBox vb_issueStat;
+	@FXML private PieChart pc_prjOverall;
+	@FXML private ComboBox<Project> cb_issueStat_project;
+	@FXML private ComboBox<Employee> cb_issueStat_employee;
 	
 	public HemsController() {}
 	
@@ -70,7 +101,7 @@ public class HemsController {
 	}
 	
 	public void taskDataDownloadClickHandler(MouseEvent me) {
-		Iterator<ProjectTask> it_tasks = App.get().prjTaskRepository.findAll().iterator();
+		Iterator<ProjectTask> it_tasks = App.get().prjTaskRep.findAll().iterator();
 		List<ProjectTask> l_tasks = new ArrayList<ProjectTask>();
 		
 		while(it_tasks.hasNext()) {
@@ -100,7 +131,7 @@ public class HemsController {
 	}
 	
 	public void projectDataDownloadClickHandler(MouseEvent me) {
-		Iterator<Project> it_projects = App.get().projectRep.findAll().iterator();
+		Iterator<Project> it_projects = App.get().prjRep.findAll().iterator();
 		List<Project> l_projects = new ArrayList<Project>();
 		
 		while(it_projects.hasNext()) {
@@ -130,7 +161,7 @@ public class HemsController {
 	}
 	
 	public void assignmentDataDownloadClickHandler(MouseEvent me) {
-		Iterator<Project> it_projects = App.get().projectRep.findAll().iterator();
+		Iterator<Project> it_projects = App.get().prjRep.findAll().iterator();
 		List<EmployeeTask> l_employeeTasks = new ArrayList<EmployeeTask>();
 		
 		while(it_projects.hasNext()) {
@@ -175,27 +206,49 @@ public class HemsController {
 		tbl_assignments.getColumns().addAll(empIdCol, empNameCol, taskQualityImpCol, taskTimeImpCol);
 	}
 	
+	
+	
+	//CANDIDATE SEARCH
 	public void searchCandidateClickHandler(MouseEvent me) {
-		List<PersonDistanceResult> results = ModelCaller.executeCandidateSearchModel( tf_candidateSearch.getText() );
-		
 		g_cadidateResult.getChildren().clear();
+
+		//Add the process indicator to the grid 
+		ProgressIndicator progressInd = new ProgressIndicator();
+		g_cadidateResult.addRow(0, progressInd);
+		progressInd.setVisible(true);
+		progressInd.toFront();
 		
-		Text hdr_sim = new Text("Similarity");
-		hdr_sim.getStyleClass().add("header");
+		//Additional service for the Process indicator
+		CandidateSearchService css = new CandidateSearchService( tf_candidateSearch.getText() );
+		css.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			
+			@Override
+			public void handle(WorkerStateEvent event) {
+				g_cadidateResult.getChildren().clear();
+
+				List<PersonDistanceResult> results = css.getValue();
+
+				Text hdr_sim = new Text("Similarity");
+				hdr_sim.getStyleClass().add("header");
+				Text hdr_name = new Text("Name");
+				hdr_name.getStyleClass().add("header");
+				g_cadidateResult.addRow(0, hdr_sim, hdr_name);
+				
+				int i = 1;
+				for (PersonDistanceResult actualRes : results) {
+					Employee emp = App.get().empRep.findOne( (long)actualRes.getPersonId() );
+					g_cadidateResult.addRow(i, new Text(Double.toString( Math.round( actualRes.getDistance()*100.0)/100.0 )), new Text(emp.getFirstName() + " " + emp.getLastName()) );
+					i++;
+				}
+			}
+		});
 		
-		Text hdr_name = new Text("Name");
-		hdr_name.getStyleClass().add("header");
-		
-		g_cadidateResult.addRow(0, hdr_sim, hdr_name);
-		
-		int i = 1;
-		for (PersonDistanceResult actualRes : results) {
-			Employee emp = App.get().empRep.findOne( (long)actualRes.getPersonId() );
-			g_cadidateResult.addRow(i, new Text(Double.toString( Math.round( actualRes.getDistance()*100.0)/100.0 )), new Text(emp.getFirstName() + " " + emp.getLastName()) );
-			i++;
-		}
+		css.restart();
 	}
 	
+	
+	
+	//TOP MENU
 	public void closeButtonClickHandler(ActionEvent evt) {
 		System.exit(0);
 	}
@@ -212,4 +265,107 @@ public class HemsController {
 			popup.show(App.get().mainStage);
 		}
 	}
+	
+	
+	
+	//PERFORMANCE EVALUATION
+	public void performanceEvaluationSelectedHandler(Event evt) {
+		if(!tab_perfEval.isSelected())
+			return;
+		
+		//clear the form to default format
+		cb_perfEval_project.getItems().clear();
+		cb_perfEval_employee.getItems().clear();
+		ta_perfText.setText("");
+		
+		//fill the comboboxes with the available values
+		Iterator<Project> it_projects = App.get().prjRep.findAll().iterator();
+		while(it_projects.hasNext()) {
+			Project actPrj = it_projects.next();
+			cb_perfEval_project.getItems().add(actPrj);
+		}
+	}
+	
+	public void cbPerfEvalProjectChangeHandler(Event evt) {
+		Project selectedProject = (Project)cb_perfEval_project.getValue();
+		Set<Employee> s_employees = selectedProject.getM_assignments().keySet();
+		
+		cb_perfEval_employee.getItems().addAll(s_employees);
+	}
+	
+	public void cbPerfEvalEmployeeChangeHandler(Event evt) {
+		Project selectedPrj = cb_perfEval_project.getValue();
+		Employee selectedEmp = cb_perfEval_employee.getValue();
+		PerfText empsPerfText = App.get().perfTextRep.findByProjectAndEmployee(selectedPrj, selectedEmp);
+		
+		if(empsPerfText != null) {
+			ta_perfText.setText( empsPerfText.getPerfEvaluationText() );
+		} else {
+			ta_perfText.setText("");
+		}
+	}
+	
+	public void saveEvalClickHandler(Event evt) {
+		Project selectedPrj = cb_perfEval_project.getValue();
+		Employee selectedEmp = cb_perfEval_employee.getValue();
+		PerfText empsPerfText = App.get().perfTextRep.findByProjectAndEmployee(selectedPrj, selectedEmp);
+		
+		if(empsPerfText != null) {
+			empsPerfText.setPerfEvaluationText( ta_perfText.getText() );
+			App.get().perfTextRep.save(empsPerfText);
+		} else {
+			empsPerfText = new PerfText(selectedPrj, selectedEmp, ta_perfText.getText());
+			App.get().perfTextRep.save(empsPerfText);
+		}
+		
+		Alert alertSuccessfulSave = new Alert(AlertType.INFORMATION);
+		alertSuccessfulSave.setTitle("Information Dialog");
+		alertSuccessfulSave.setHeaderText("Successful performance evaluation save");
+		alertSuccessfulSave.setContentText("Successfully saved the entered performance evaluation!");
+		alertSuccessfulSave.showAndWait();
+	}
+	
+	
+	//ISSUE STATISTICS
+	public void issueStatsSelectedHandler(Event evt) {
+		if(!tab_issueStats.isSelected())
+			return;
+		
+		//clear the form to default format
+		cb_issueStat_project.getItems().clear();
+		cb_issueStat_employee.getItems().clear();
+		vb_issueStat.setVisible(false);
+		
+		//fill the comboboxes with the available values
+		Iterator<Project> it_projects = App.get().prjRep.findAll().iterator();
+		while(it_projects.hasNext()) {
+			Project actPrj = it_projects.next();
+			cb_issueStat_project.getItems().add(actPrj);
+		}
+	}
+	
+	public void cbIssueStatProjectChangeHandler(Event evt) {
+		//fill up employee combobox
+		Project selectedProject = (Project)cb_issueStat_project.getValue();
+		Set<Employee> s_employees = selectedProject.getM_assignments().keySet();
+		
+		cb_issueStat_employee.getItems().addAll(s_employees);
+		
+		//show the overall pie chart
+		vb_issueStat.setVisible(true);
+		List<Employee> emps = new ArrayList<Employee>(selectedProject.getM_assignments().keySet());
+		
+		ObservableList<Data> data = FXCollections.observableArrayList();
+		for(Employee emp : emps) {
+			PerfStat perfStat = App.get().perfStatRep.findByProjectAndEmployee(selectedProject, emp);
+			data.add(new PieChart.Data(emp.getFullName(), perfStat.getSumTasks()));
+		}
+		pc_prjOverall.setData(data);
+		
+	}
+	
+	public void cbIssueStatEmployeeChangeHandler(Event evt) {
+
+	}
+	
 }

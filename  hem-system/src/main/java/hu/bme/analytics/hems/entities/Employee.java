@@ -25,8 +25,7 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return String.format("Employee[id=%d, firstName='%s', lastName='%s']",
-				id, firstName, lastName);
+		return String.format("%d - %s %s", id, firstName, lastName);
 	}
 
 	public long getId() {
@@ -53,6 +52,8 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
-	
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
 	
 }
