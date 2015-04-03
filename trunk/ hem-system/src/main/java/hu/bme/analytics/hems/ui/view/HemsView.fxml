@@ -86,8 +86,6 @@
                          </top>
                          <center>
                          	<VBox fx:id="vb_issueStat" visible="false">
-                         		<Label text="Overall project data"/>
-                         		<PieChart fx:id="pc_prjOverall"/>
                          	</VBox>
                          </center>
                       </BorderPane>
