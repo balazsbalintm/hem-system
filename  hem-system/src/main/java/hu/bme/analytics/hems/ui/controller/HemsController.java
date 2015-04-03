@@ -10,6 +10,7 @@ import hu.bme.analytics.hems.entities.Project;
 import hu.bme.analytics.hems.entities.ProjectTask;
 import hu.bme.analytics.hems.entities.TaskSet;
 import hu.bme.analytics.hems.ui.components.AboutScene;
+import hu.bme.analytics.hems.ui.components.ProjectIssueStatStackPane;
 import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
+import org.apache.commons.collections15.map.HashedMap;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -350,18 +352,21 @@ public class HemsController {
 		Set<Employee> s_employees = selectedProject.getM_assignments().keySet();
 		
 		cb_issueStat_employee.getItems().addAll(s_employees);
+
 		
 		//show the overall pie chart
 		vb_issueStat.setVisible(true);
 		List<Employee> emps = new ArrayList<Employee>(selectedProject.getM_assignments().keySet());
 		
-		ObservableList<Data> data = FXCollections.observableArrayList();
+		ObservableList<Data> overallData = FXCollections.observableArrayList();
+		Map<Employee, PerfStat> m_empPerfStat = new HashedMap<Employee, PerfStat>();
 		for(Employee emp : emps) {
 			PerfStat perfStat = App.get().perfStatRep.findByProjectAndEmployee(selectedProject, emp);
-			data.add(new PieChart.Data(emp.getFullName(), perfStat.getSumTasks()));
+			m_empPerfStat.put(emp, perfStat);
+			overallData.add(new PieChart.Data(emp.getFullName(), perfStat.getSumTasks()));
 		}
-		pc_prjOverall.setData(data);
-		
+		ProjectIssueStatStackPane pissp = new ProjectIssueStatStackPane(overallData, m_empPerfStat);
+		vb_issueStat.getChildren().add(pissp);
 	}
 	
 	public void cbIssueStatEmployeeChangeHandler(Event evt) {
