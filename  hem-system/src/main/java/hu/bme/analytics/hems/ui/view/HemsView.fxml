@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.image.ImageView?>
+<?import hu.bme.analytics.hems.ui.components.BackButton?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" styleClass="background" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.bme.analytics.hems.ui.controller.HemsController">
    <center>
@@ -74,18 +76,16 @@
                               <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               </rowConstraints>
                                <children>
                                   <Label text="Project" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                                  <Label text="Employee" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                   <ComboBox fx:id="cb_issueStat_project" prefWidth="150.0" GridPane.columnIndex="1" onAction="#cbIssueStatProjectChangeHandler"/>
-                                  <ComboBox fx:id="cb_issueStat_employee" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#cbIssueStatEmployeeChangeHandler" />
                                </children>
                             </GridPane>
                          </top>
                          <center>
-                         	<VBox fx:id="vb_issueStat" visible="false">
+                         	<VBox fx:id="vb_issueStatFrame" visible="false">
+                         		<VBox fx:id="vb_issueStat" visible="false"/>
                          	</VBox>
                          </center>
                       </BorderPane>

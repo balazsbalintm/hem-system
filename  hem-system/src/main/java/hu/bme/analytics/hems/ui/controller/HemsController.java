@@ -68,10 +68,11 @@ public class HemsController {
 	
 	//issue statistics
 	@FXML private Tab tab_issueStats;
+	@FXML private VBox vb_issueStatFrame;
 	@FXML private VBox vb_issueStat;
+	//@FXML private BackButton iv_backButton;
 	@FXML private PieChart pc_prjOverall;
 	@FXML private ComboBox<Project> cb_issueStat_project;
-	@FXML private ComboBox<Employee> cb_issueStat_employee;
 	
 	public HemsController() {}
 	
@@ -335,10 +336,11 @@ public class HemsController {
 		
 		//clear the form to default format
 		cb_issueStat_project.getItems().clear();
-		cb_issueStat_employee.getItems().clear();
+		vb_issueStatFrame.setVisible(false);
 		vb_issueStat.setVisible(false);
+		vb_issueStat.getChildren().clear();
 		
-		//fill the comboboxes with the available values
+		//fill the combo boxes with the available values
 		Iterator<Project> it_projects = App.get().prjRep.findAll().iterator();
 		while(it_projects.hasNext()) {
 			Project actPrj = it_projects.next();
@@ -349,12 +351,9 @@ public class HemsController {
 	public void cbIssueStatProjectChangeHandler(Event evt) {
 		//fill up employee combobox
 		Project selectedProject = (Project)cb_issueStat_project.getValue();
-		Set<Employee> s_employees = selectedProject.getM_assignments().keySet();
-		
-		cb_issueStat_employee.getItems().addAll(s_employees);
-
 		
 		//show the overall pie chart
+		vb_issueStatFrame.setVisible(true);
 		vb_issueStat.setVisible(true);
 		List<Employee> emps = new ArrayList<Employee>(selectedProject.getM_assignments().keySet());
 		
@@ -368,9 +367,4 @@ public class HemsController {
 		ProjectIssueStatStackPane pissp = new ProjectIssueStatStackPane(overallData, m_empPerfStat);
 		vb_issueStat.getChildren().add(pissp);
 	}
-	
-	public void cbIssueStatEmployeeChangeHandler(Event evt) {
-
-	}
-	
 }
