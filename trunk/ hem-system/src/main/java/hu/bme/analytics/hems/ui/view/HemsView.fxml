@@ -146,7 +146,7 @@
                                 </GridPane>
                              </top>
                              <center>
-                                <TextArea fx:id="ta_perfText" prefHeight="200.0" prefWidth="200.0" wrapText="true" BorderPane.alignment="CENTER" />
+                                <TextArea fx:id="ta_perfText" prefHeight="100.0" maxHeight="300.0" prefWidth="200.0" wrapText="true" BorderPane.alignment="CENTER" />
                              </center>
                              <bottom>
                                 <Button mnemonicParsing="false" text="Save evaluation!" BorderPane.alignment="CENTER" onMouseClicked="#saveEvalClickHandler"/>
