@@ -14,6 +14,7 @@ import hu.bme.analytics.hems.ui.components.ProjectIssueStatStackPane;
 import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
-import org.apache.commons.collections15.map.HashedMap;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -358,7 +358,7 @@ public class HemsController {
 		List<Employee> emps = new ArrayList<Employee>(selectedProject.getM_assignments().keySet());
 		
 		ObservableList<Data> overallData = FXCollections.observableArrayList();
-		Map<Employee, PerfStat> m_empPerfStat = new HashedMap<Employee, PerfStat>();
+		Map<Employee, PerfStat> m_empPerfStat = new HashMap<Employee, PerfStat>();
 		for(Employee emp : emps) {
 			PerfStat perfStat = App.get().perfStatRep.findByProjectAndEmployee(selectedProject, emp);
 			m_empPerfStat.put(emp, perfStat);
