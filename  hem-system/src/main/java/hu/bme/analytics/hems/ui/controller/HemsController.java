@@ -1,6 +1,7 @@
 package hu.bme.analytics.hems.ui.controller;
 
 import hu.bme.analytics.hems.App;
+import hu.bme.analytics.hems.HemsProps;
 import hu.bme.analytics.hems.entities.Employee;
 import hu.bme.analytics.hems.entities.EmployeeTask;
 import hu.bme.analytics.hems.entities.PerfStat;
@@ -12,6 +13,7 @@ import hu.bme.analytics.hems.entities.TaskSet;
 import hu.bme.analytics.hems.ui.components.AboutScene;
 import hu.bme.analytics.hems.ui.components.ProjectIssueStatStackPane;
 import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
+import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProcessor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,6 +75,9 @@ public class HemsController {
 	//@FXML private BackButton iv_backButton;
 	@FXML private PieChart pc_prjOverall;
 	@FXML private ComboBox<Project> cb_issueStat_project;
+	
+	//LinkedIn functions
+	@FXML private Tab tab_linkedIn;
 	
 	public HemsController() {}
 	
@@ -366,5 +371,15 @@ public class HemsController {
 		}
 		ProjectIssueStatStackPane pissp = new ProjectIssueStatStackPane(overallData, m_empPerfStat);
 		vb_issueStat.getChildren().add(pissp);
+	}
+	
+	
+	//LINKEDIN FUNCTIONS
+	public void linkedInSelectedHandler(Event evt) {
+		System.out.println("LINKED-IN TAB SELECTED");
+	}
+	
+	public void linkedInProfileImportClickHandler(MouseEvent evt) {
+		LinkedInProcessor linkedInProc = new LinkedInProcessor( HemsProps.get().getProperty(HemsProps.LI_PROFILES) );
 	}
 }

@@ -9,6 +9,7 @@ public class HemsProps extends Properties{
 	private static final long serialVersionUID = 1L;
 	public static final String RM_CSVPATH = "app.rm.csvpath";
 	public static final String RM_MODELPATH = "app.rm.modelpath";
+	public static final String LI_PROFILES = "app.li.profiles";
 	
 	private static HemsProps instance = null;
 	public static HemsProps get() {
