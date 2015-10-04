@@ -12,6 +12,7 @@ import hu.bme.analytics.hems.entities.ProjectTask;
 import hu.bme.analytics.hems.entities.TaskSet;
 import hu.bme.analytics.hems.ui.components.AboutScene;
 import hu.bme.analytics.hems.ui.components.ProjectIssueStatStackPane;
+import hu.bme.analytics.hems.ui.components.RapidMinerBarChart;
 import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
 import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProcessor;
 
@@ -42,9 +43,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
 import org.springframework.stereotype.Component;
@@ -61,6 +62,8 @@ public class HemsController {
 	//candidate search
 	@FXML private TextField tf_candidateSearch;
 	@FXML private GridPane g_cadidateResult;
+	@FXML private RapidMinerBarChart rmbc_candidateResults;
+	@FXML private BorderPane bp_candSearch;
 	
 	//performance evaluation
 	@FXML private Tab tab_perfEval;
@@ -218,11 +221,13 @@ public class HemsController {
 	
 	//CANDIDATE SEARCH
 	public void searchCandidateClickHandler(MouseEvent me) {
-		g_cadidateResult.getChildren().clear();
+//		g_cadidateResult.getChildren().clear();
+		rmbc_candidateResults.setVisible(false);
 
 		//Add the process indicator to the grid 
 		ProgressIndicator progressInd = new ProgressIndicator();
-		g_cadidateResult.addRow(0, progressInd);
+//		g_cadidateResult.addRow(0, progressInd);
+		bp_candSearch.setCenter(progressInd);
 		progressInd.setVisible(true);
 		progressInd.toFront();
 		
@@ -232,22 +237,27 @@ public class HemsController {
 			
 			@Override
 			public void handle(WorkerStateEvent event) {
-				g_cadidateResult.getChildren().clear();
+				
+//				g_cadidateResult.getChildren().clear();
 
 				List<PersonDistanceResult> results = css.getValue();
-
-				Text hdr_sim = new Text("Similarity");
-				hdr_sim.getStyleClass().add("header");
-				Text hdr_name = new Text("Name");
-				hdr_name.getStyleClass().add("header");
-				g_cadidateResult.addRow(0, hdr_sim, hdr_name);
+				rmbc_candidateResults.setCandidateSearchResultData(results);
 				
-				int i = 1;
-				for (PersonDistanceResult actualRes : results) {
-					Employee emp = App.get().empRep.findOne( (long)actualRes.getPersonId() );
-					g_cadidateResult.addRow(i, new Text(Double.toString( Math.round( actualRes.getDistance()*100.0)/100.0 )), new Text(emp.getFirstName() + " " + emp.getLastName()) );
-					i++;
-				}
+				bp_candSearch.setCenter(rmbc_candidateResults);
+				rmbc_candidateResults.setVisible(true);
+
+//				Text hdr_sim = new Text("Similarity");
+//				hdr_sim.getStyleClass().add("header");
+//				Text hdr_name = new Text("Name");
+//				hdr_name.getStyleClass().add("header");
+//				g_cadidateResult.addRow(0, hdr_sim, hdr_name);
+//				
+//				int i = 1;
+//				for (PersonDistanceResult actualRes : results) {
+//					Employee emp = App.get().empRep.findOne( (long)actualRes.getPersonId() );
+//					g_cadidateResult.addRow(i, new Text(Double.toString( Math.round( actualRes.getDistance()*100.0)/100.0 )), new Text(emp.getFirstName() + " " + emp.getLastName()) );
+//					i++;
+//				}
 			}
 		});
 		
