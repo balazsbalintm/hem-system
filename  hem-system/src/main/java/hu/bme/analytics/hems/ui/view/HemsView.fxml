@@ -11,6 +11,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import hu.bme.analytics.hems.ui.components.BackButton?>
 <?import hu.bme.analytics.hems.ui.components.RapidMinerBarChart?>
+<?import hu.bme.analytics.hems.ui.components.LinkedInBarChart?>
+
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" styleClass="background" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.bme.analytics.hems.ui.controller.HemsController">
    <center>
@@ -161,7 +163,10 @@
 					<BorderPane prefHeight="300.0" prefWidth="300.0">
 						<top>
                         	<Button text="Download available LinkedIn profiles!" BorderPane.alignment="CENTER" onMouseClicked="#linkedInProfileImportClickHandler" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-						</top>	
+						</top>
+						<center>
+							<LinkedInBarChart id="libc_experiences" fx:id="libc_experiences" visible="false"/>
+						</center>
 					</BorderPane>
 				</Tab>
               </tabs>

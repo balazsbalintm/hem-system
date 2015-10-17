@@ -13,13 +13,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.StackPane;
 
 public class RapidMinerBarChart extends StackPane {
-	final static String austria = "Austria";
-	final static String brazil = "Brazil";
-	final static String france = "France";
-	final static String italy = "Italy";
-	final static String usa = "USA";
 
-	//public RapidMinerBarChart(List<PersonDistanceResult> l_personDistances) {
 	public RapidMinerBarChart() {
 	}
 	

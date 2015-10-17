@@ -11,10 +11,12 @@ import hu.bme.analytics.hems.entities.Project;
 import hu.bme.analytics.hems.entities.ProjectTask;
 import hu.bme.analytics.hems.entities.TaskSet;
 import hu.bme.analytics.hems.ui.components.AboutScene;
+import hu.bme.analytics.hems.ui.components.LinkedInBarChart;
 import hu.bme.analytics.hems.ui.components.ProjectIssueStatStackPane;
 import hu.bme.analytics.hems.ui.components.RapidMinerBarChart;
 import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
 import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProcessor;
+import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProfile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,12 +77,12 @@ public class HemsController {
 	@FXML private Tab tab_issueStats;
 	@FXML private VBox vb_issueStatFrame;
 	@FXML private VBox vb_issueStat;
-	//@FXML private BackButton iv_backButton;
 	@FXML private PieChart pc_prjOverall;
 	@FXML private ComboBox<Project> cb_issueStat_project;
 	
 	//LinkedIn functions
 	@FXML private Tab tab_linkedIn;
+	@FXML private LinkedInBarChart libc_experiences;
 	
 	public HemsController() {}
 	
@@ -390,6 +392,12 @@ public class HemsController {
 	}
 	
 	public void linkedInProfileImportClickHandler(MouseEvent evt) {
-		LinkedInProcessor linkedInProc = new LinkedInProcessor( HemsProps.get().getProperty(HemsProps.LI_PROFILES) );
+		LinkedInProcessor linkedInProc = new LinkedInProcessor();
+		List<LinkedInProfile> l_linkedInProfiles = linkedInProc.getLinkedInProfiles( HemsProps.get().getProperty(HemsProps.LI_PROFILES) );
+		
+		libc_experiences.setLinkedInProfiles(l_linkedInProfiles);
+		libc_experiences.setVisible(true);
+		
+		
 	}
 }
