@@ -1,6 +1,6 @@
 package hu.bme.analytics.hems.ui.rapidminer.linkedin;
 
-public class LinkedInProfile {
+public class LinkedInProfile implements Comparable<LinkedInProfile> {
 	private String name;
 	private double experienceInYears;
 	private String profilePicLink;
@@ -42,6 +42,21 @@ public class LinkedInProfile {
 
 	public void setProfilePicLink(String profilePicLink) {
 		this.profilePicLink = profilePicLink;
+	}
+
+
+	@Override
+	public int compareTo(LinkedInProfile o) {
+		if(o == null)
+			return 0;
+		
+		if(experienceInYears > o.getExperienceInYears()) {
+			return 1;
+		} else if (experienceInYears < o.getExperienceInYears()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 	
 }

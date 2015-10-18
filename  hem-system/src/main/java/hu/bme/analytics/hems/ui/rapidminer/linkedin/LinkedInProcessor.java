@@ -18,16 +18,15 @@ import org.jsoup.select.Elements;
 
 public class LinkedInProcessor {
 	private static String EXPERIENCE_CONTAINER = "background-experience";
-	private static String EXPERIENCE_HEADER = "header";
-	private static String EXPERIENCE_LOGO = "experience-logo";
-	private static String EXPERIENCE_DESCRIPTION = "description";
-	private static String PERSON_NAME = "name";
+	private static boolean TEST_MODE = true;
 	
 	private List<String> l_profileLinks = new ArrayList<String>();
 	
-	public LinkedInProcessor() {}
-	
 	public List<LinkedInProfile> getLinkedInProfiles(String profiles) {
+		if(TEST_MODE) {
+			return getTestData();
+		}
+		
 		try {
 			List<LinkedInProfile> l_linkedInProfiles = new ArrayList<LinkedInProfile>();
 			
@@ -48,7 +47,7 @@ public class LinkedInProcessor {
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				factory.setValidating(false);
 				factory.setIgnoringElementContentWhitespace(true);
-				
+				Thread.sleep(5000);
 				URL urlProfil = new URL(actProfile);
 				    try {
 				    	Document parsedProfile = Jsoup.parse(urlProfil, 8000);
@@ -143,5 +142,18 @@ public class LinkedInProcessor {
 		}
 		System.out.println("---------------------");
 		return sumYear + sumMonths/12;
+	}
+	
+	/**
+	 * Test data generator function. Returns dummy LinkedIn profiles.
+	 * @return Dummy LinkedIn profile list.
+	 */
+	private List<LinkedInProfile> getTestData() {
+		List<LinkedInProfile> l_expResults = new ArrayList<LinkedInProfile>();
+		l_expResults.add(new LinkedInProfile("Balint Balazs", 6.833333333333334, "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/3/005/05e/2ee/27bf820.jpg"));
+		l_expResults.add(new LinkedInProfile("Peter Kovacs", 11.25, "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/4/000/13f/2a3/1e9c98e.jpg"));
+		l_expResults.add(new LinkedInProfile("Adam Somorjai", 6.5, "https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAACsAAAAJGUxNTg2N2E2LTRkN2QtNGI4MS05MDU5LTdjZDU0ZTRhOTFmYQ.jpg"));
+		
+		return l_expResults;
 	}
 }

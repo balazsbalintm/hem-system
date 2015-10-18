@@ -160,7 +160,7 @@
                 </Tab>
 <!--            LINKED IN FUNCTIONS -->
 				<Tab fx:id="tab_linkedIn" text="LinkedIn" onSelectionChanged="#linkedInSelectedHandler">
-					<BorderPane prefHeight="300.0" prefWidth="300.0">
+					<BorderPane fx:id="bp_linkedIn" prefHeight="300.0" prefWidth="300.0">
 						<top>
                         	<Button text="Download available LinkedIn profiles!" BorderPane.alignment="CENTER" onMouseClicked="#linkedInProfileImportClickHandler" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 						</top>

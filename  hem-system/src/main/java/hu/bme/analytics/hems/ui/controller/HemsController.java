@@ -27,6 +27,7 @@ import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -82,6 +83,7 @@ public class HemsController {
 	
 	//LinkedIn functions
 	@FXML private Tab tab_linkedIn;
+	@FXML private BorderPane bp_linkedIn;
 	@FXML private LinkedInBarChart libc_experiences;
 	
 	public HemsController() {}
@@ -392,12 +394,33 @@ public class HemsController {
 	}
 	
 	public void linkedInProfileImportClickHandler(MouseEvent evt) {
+		libc_experiences.setVisible(false);
+		
+		//start showing the process indicator that look-up process is running
+		ProgressIndicator progressInd = new ProgressIndicator();
+		bp_linkedIn.setCenter(progressInd);
+		progressInd.setVisible(true);
+		progressInd.toFront();
+
 		LinkedInProcessor linkedInProc = new LinkedInProcessor();
-		List<LinkedInProfile> l_linkedInProfiles = linkedInProc.getLinkedInProfiles( HemsProps.get().getProperty(HemsProps.LI_PROFILES) );
 		
-		libc_experiences.setLinkedInProfiles(l_linkedInProfiles);
-		libc_experiences.setVisible(true);
+		Task task = new Task<Void>() {
+			@Override protected Void call() throws Exception {
+				List<LinkedInProfile> l_linkedInProfiles = linkedInProc.getLinkedInProfiles( HemsProps.get().getProperty(HemsProps.LI_PROFILES) );
+				libc_experiences.setLinkedInProfiles(l_linkedInProfiles);
+				libc_experiences.setVisible(true);
+				
+				return null;
+		    }
+
+			@Override
+			protected void succeeded() {
+				bp_linkedIn.setCenter(libc_experiences);
+			}
+		};
 		
+		Thread thrExpBarchart = new Thread(task);
+		thrExpBarchart.start();
 		
 	}
 }
