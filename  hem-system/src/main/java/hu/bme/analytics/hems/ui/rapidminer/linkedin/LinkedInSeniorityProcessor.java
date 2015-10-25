@@ -1,5 +1,7 @@
 package hu.bme.analytics.hems.ui.rapidminer.linkedin;
 
+import hu.bme.analytics.hems.entities.LinkedInProfile;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,49 +18,36 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
-public class LinkedInProcessor {
+public class LinkedInSeniorityProcessor {
 	private static String EXPERIENCE_CONTAINER = "background-experience";
 	private static boolean TEST_MODE = true;
 	
-	private List<String> l_profileLinks = new ArrayList<String>();
+	private List<String> l_profileLinks = null;
 	
-	public List<LinkedInProfile> getLinkedInProfiles(String profiles) {
+	public List<LinkedInProfile> getLinkedInProfiles(String profilesPath) {
 		if(TEST_MODE) {
 			return getTestData();
 		}
 		
 		try {
+			l_profileLinks = LinkedInUtil.getLinkedInProfileList(profilesPath);
+
 			List<LinkedInProfile> l_linkedInProfiles = new ArrayList<LinkedInProfile>();
-			
-			File f_profileLinks = new File(profiles);
-			FileInputStream fis = new FileInputStream(f_profileLinks);
-			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-			
-			//Reading linked-in profiles as inputs
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				l_profileLinks.add(line);
-			}
-			br.close();
-			
-			
 			//Reading one-by-one the links from the profile list
 			for(String actProfile : l_profileLinks) {
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-				factory.setValidating(false);
-				factory.setIgnoringElementContentWhitespace(true);
+
 				Thread.sleep(5000);
 				URL urlProfil = new URL(actProfile);
 				    try {
 				    	Document parsedProfile = Jsoup.parse(urlProfil, 8000);
 				        
-				        String personName = getPersonName(parsedProfile);
+				        String personName = LinkedInUtil.getPersonName(parsedProfile);
 				        System.out.println("Person name: " + personName);
 				        
 				        double sumYearsOfExp = getYearsOfExperience(parsedProfile);
 				        System.out.println("Sum experience: " + sumYearsOfExp);
 				        
-				        String profilePicLink = getProfilePicLink(parsedProfile);
+				        String profilePicLink = LinkedInUtil.getProfilePicLink(parsedProfile);
 				        System.out.println("Profile pic link: " + profilePicLink);
 				        
 				        l_linkedInProfiles.add(new LinkedInProfile(personName, sumYearsOfExp, profilePicLink));
@@ -91,23 +80,6 @@ public class LinkedInProcessor {
 			e.printStackTrace();
 		}
 		return new ArrayList<LinkedInProfile>();
-	}
-	
-	private String getProfilePicLink(Document parsedProfile) {
-		Element profilePicDiv = parsedProfile.select("div[class=profile-picture]").get(0);
-		Element profilePicImg = profilePicDiv.select("img").get(0);
-		
-		return profilePicImg.attr("src");
-	}
-
-	private String getPersonName(Document parsedProfile) {
-		Elements personNameElements = parsedProfile.select("title");
-		if(personNameElements == null || personNameElements.size() == 0) {
-			return "Not determinable name";
-		}
-		
-		Node personNameElement = personNameElements.get(0).unwrap();
-		return personNameElement.toString().split("\\|")[0];
 	}
 
 	private static String MONTH = "month";
@@ -143,6 +115,8 @@ public class LinkedInProcessor {
 		System.out.println("---------------------");
 		return sumYear + sumMonths/12;
 	}
+	
+	
 	
 	/**
 	 * Test data generator function. Returns dummy LinkedIn profiles.

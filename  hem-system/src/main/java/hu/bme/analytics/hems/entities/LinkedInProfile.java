@@ -1,4 +1,4 @@
-package hu.bme.analytics.hems.ui.rapidminer.linkedin;
+package hu.bme.analytics.hems.entities;
 
 public class LinkedInProfile implements Comparable<LinkedInProfile> {
 	private String name;

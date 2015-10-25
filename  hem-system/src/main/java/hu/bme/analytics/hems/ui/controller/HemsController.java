@@ -4,6 +4,7 @@ import hu.bme.analytics.hems.App;
 import hu.bme.analytics.hems.HemsProps;
 import hu.bme.analytics.hems.entities.Employee;
 import hu.bme.analytics.hems.entities.EmployeeTask;
+import hu.bme.analytics.hems.entities.LinkedInProfile;
 import hu.bme.analytics.hems.entities.PerfStat;
 import hu.bme.analytics.hems.entities.PerfText;
 import hu.bme.analytics.hems.entities.PersonDistanceResult;
@@ -15,8 +16,8 @@ import hu.bme.analytics.hems.ui.components.LinkedInBarChart;
 import hu.bme.analytics.hems.ui.components.ProjectIssueStatStackPane;
 import hu.bme.analytics.hems.ui.components.RapidMinerBarChart;
 import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
-import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProcessor;
-import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProfile;
+import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProfileImport;
+import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInSeniorityProcessor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -394,6 +395,12 @@ public class HemsController {
 	}
 	
 	public void linkedInProfileImportClickHandler(MouseEvent evt) {
+		LinkedInProfileImport lipi = new LinkedInProfileImport();
+		
+		lipi.importProfilesIntoDB(HemsProps.get().getProperty(HemsProps.LI_PROFILES));
+	}
+	
+	public void linkedInProfileSeniorityClickHandler(MouseEvent evt) {
 		libc_experiences.setVisible(false);
 		
 		//start showing the process indicator that look-up process is running
@@ -402,7 +409,7 @@ public class HemsController {
 		progressInd.setVisible(true);
 		progressInd.toFront();
 
-		LinkedInProcessor linkedInProc = new LinkedInProcessor();
+		LinkedInSeniorityProcessor linkedInProc = new LinkedInSeniorityProcessor();
 		
 		Task task = new Task<Void>() {
 			@Override protected Void call() throws Exception {
@@ -421,6 +428,6 @@ public class HemsController {
 		
 		Thread thrExpBarchart = new Thread(task);
 		thrExpBarchart.start();
-		
 	}
+	
 }

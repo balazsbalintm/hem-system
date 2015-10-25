@@ -1,5 +1,6 @@
 package hu.bme.analytics.hems.ui.rapidminer.linkedin;
 
+import hu.bme.analytics.hems.entities.LinkedInProfile;
 import hu.bme.analytics.hems.ui.components.LinkedInBarChart;
 
 import java.util.List;
@@ -9,14 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class LinkedinProcessorTest extends Application {
+public class LinkedInSeniorityTest extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		String path_profiles = "E:\\Workplace\\github\\hem-system\\ hem-system\\linkedin-profiles-list.csv";
 		List<LinkedInProfile> l_expResults = null;
 		
-		LinkedInProcessor lip = new LinkedInProcessor();
+		LinkedInSeniorityProcessor lip = new LinkedInSeniorityProcessor();
 		l_expResults = lip.getLinkedInProfiles(path_profiles);
 		
 		LinkedInBarChart libc_experience = new LinkedInBarChart();
@@ -29,6 +30,5 @@ public class LinkedinProcessorTest extends Application {
         primaryStage.setScene(new Scene(root, 500, 650));
         primaryStage.show();
 	}
-	
 	
 }

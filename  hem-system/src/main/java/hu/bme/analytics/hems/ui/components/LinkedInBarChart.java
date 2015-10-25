@@ -1,6 +1,6 @@
 package hu.bme.analytics.hems.ui.components;
 
-import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProfile;
+import hu.bme.analytics.hems.entities.LinkedInProfile;
 
 import java.util.List;
 
