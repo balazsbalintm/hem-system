@@ -34,36 +34,46 @@ public class LinkedInProfileImport {
 
 					//Reading one-by-one the links from the profile list
 					for(int i = 0; i < l_profileLinks.size(); i++) {
-						Thread.sleep(5000);
-						
-						//TODO: AN INTERNAL WHILE CYCLE TO REACH A FILLED TASK DESCRIPTION
-						
 						String actProfile = l_profileLinks.get(i);
-						URL urlProfil = new URL(actProfile);
 						
-				    	Document parsedProfile = Jsoup.parse(urlProfil, 8000);
+						Document parsedProfile = null;
+				    	String taskDescription = null; 
+				    	String[] fullName = null;
+				    	int j = 0;
+				    	while (taskDescription == null && j < 4) {
+				    		//reach the linked in profile's URL
+				    		URL urlProfil = new URL(actProfile);
+				    		parsedProfile = Jsoup.parse(urlProfil, 8000);
 
-				    	//search for the name in order to create the employee profile
-				    	String[] fullName = LinkedInUtil.getPersonNameSeparated(parsedProfile);
-				    	Employee empLinkedIn = LinkedInUtil.addLinkedInPerson(fullName[0], fullName[1]);
+				    		//get the name out of the parsed source
+				    		fullName = LinkedInUtil.getPersonNameSeparated(parsedProfile);
+				    		LOGGER.info("Name:" + fullName);
+				    		
+				    		//get the experience description out of the parser source
+				    		taskDescription = getProfileExperience(parsedProfile);
+				    		LOGGER.info("Task description: " + taskDescription);
+				    		
+				    		j++;
+				    		Thread.sleep(5000);
+				    	}
 				    	
-				    	//create the technical project task based on the LinkedIn profile experience
-				    	String taskDescription = getProfileExperience(parsedProfile);
-				    	ProjectTask taskLinkedIn = LinkedInUtil.addLinkedInTask(taskDescription);
-				    	LOGGER.info("The following task description was retreived from the profile: " + taskDescription);
+				    	//COMMIT ALL DATA TO DB
+				    	//search for the name in order to create the employee profile
+				    	Employee empLinkedIn = LinkedInUtil.addLinkedInPerson(fullName[0], fullName[1]);
 				    	
 				    	//get the LinkedIn project which is a technical project in DB
 				    	Project prjLinkedIn = LinkedInUtil.getLinkedInProject();
 				    	
-				    	//commit project data
+				    	//create task, add it to the project with assigning to the linked in profile  
+				    	ProjectTask taskLinkedIn = LinkedInUtil.addLinkedInTask(taskDescription);
 				    	TaskSet taskSetLinkedIn = prjLinkedIn.assignTaskToEmployee(empLinkedIn, taskLinkedIn);
 				    	App.get().taskSetRep.save(taskSetLinkedIn);
 				    	App.get().prjRep.save(prjLinkedIn);
 				    	
+				    	LOGGER.info("LINKEDIN: data persisted from the web!");
+				    	
 				    	Platform.runLater(new ProgressIndicatorThread(pi_profileImport, l_profileLinks.size(), i+1));
 					}
-					
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

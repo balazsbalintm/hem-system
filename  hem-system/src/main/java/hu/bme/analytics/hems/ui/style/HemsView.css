@@ -1,3 +1,22 @@
+/* ****************** */
+/* GENERAL FORMATTING */
+.label {
+	-fx-text-fill: #CFD1CF;
+}
+
+.axis{
+  -fx-tick-label-fill: #CFD1CF;
+}
+
+.chart-pie-label {
+    -fx-fill: #CFD1CF;
+} 
+.chart-legend {
+   -fx-background-color:  #fdfdfd;
+}
+/* ****************** */
+
+
 .background {
     -fx-background-image: url('CoarseGrid.png');
     -fx-background-repeat: repeat;
