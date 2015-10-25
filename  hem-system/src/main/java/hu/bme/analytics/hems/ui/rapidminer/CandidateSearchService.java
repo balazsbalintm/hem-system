@@ -9,9 +9,11 @@ import javafx.concurrent.Task;
 
 public class CandidateSearchService extends Service<List<PersonDistanceResult>> {
 	private String candidateSearchText;
+	private InternalExternalSelector intExtSel;
 	
-	public CandidateSearchService(String candidateSearchText) {
+	public CandidateSearchService(String candidateSearchText, InternalExternalSelector intExtSel) {
 		this.candidateSearchText = candidateSearchText;
+		this.intExtSel = intExtSel;
 	}
 	
 	@Override
@@ -19,7 +21,7 @@ public class CandidateSearchService extends Service<List<PersonDistanceResult>> 
 		return new Task<List<PersonDistanceResult>>() {
 			@Override
 			protected List<PersonDistanceResult> call() throws Exception {
-				return ModelCaller.executeCandidateSearchModel( candidateSearchText );
+				return ModelCaller.executeCandidateSearchModel( candidateSearchText, intExtSel );
 			}
 		};
 	}

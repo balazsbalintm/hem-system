@@ -2,6 +2,7 @@ package hu.bme.analytics.hems.entities;
 
 import hu.bme.analytics.hems.App;
 import hu.bme.analytics.hems.HemsProps;
+import hu.bme.analytics.hems.ui.rapidminer.InternalExternalSelector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +20,7 @@ public class EntityUtil {
 	
 	private static String outputCsvPath;
 	
-	public static void toCsvEmpAndTasks() {
+	public static void toCsvEmpAndTasks(InternalExternalSelector intExtSel) {
 		Iterator<Project> it_allProjects = App.get().prjRep.findAll().iterator();
 		
 		CsvCreator csvCreator = new CsvCreator(outputCsvPath);
@@ -34,6 +35,11 @@ public class EntityUtil {
 			Set<Employee> emps = actualPrj.keySet();
 			
 			for(Employee emp : emps) {
+				if(	  (intExtSel == InternalExternalSelector.INTERNAL && !emp.isInternalEmployee())
+				   || (intExtSel == InternalExternalSelector.EXTERNAL && emp.isInternalEmployee())) {
+					continue;
+				}
+				
 				TaskSet tasks = actualPrj.get(emp);
 
 				for (ProjectTask task : tasks.getTasks()) {

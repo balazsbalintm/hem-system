@@ -19,6 +19,7 @@ import hu.bme.analytics.hems.ui.view.Views;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -45,9 +46,9 @@ public class App extends AbstractJavaFxApplicationSupport {
 	
 	public Stage mainStage;
 	
-	private static String MAIN_VIEW_LOC = "./ui/view/MainView.fxml";
-
 	/* ****************** */
+	private final static Logger LOGGER = Logger.getLogger(App.class.getName());
+	private static String MAIN_VIEW_LOC = "./ui/view/MainView.fxml";
 	private static boolean IS_DATA_UPLOAD_MODE = false;
 	/* ****************** */
 
@@ -103,16 +104,20 @@ public class App extends AbstractJavaFxApplicationSupport {
 		launchApp(App.class, args);
 	}
 
+	
+	
+	
 	/* ****************DATA CREATION ACTIVITY**************** */
 	private void DataCreator() {
 		// Creation of employees
-		Employee emp1 = new Employee("Akos", "Toth");
-		Employee emp2 = new Employee("Gabor", "Kovacs");
-		Employee emp3 = new Employee("Adam", "Ciceri");
+		Employee emp1 = new Employee("Akos", "Toth", true);
+		Employee emp2 = new Employee("Gabor", "Kovacs", true);
+		Employee emp3 = new Employee("Adam", "Ciceri", true);
 
 		empRep.save(emp1);
 		empRep.save(emp2);
 		empRep.save(emp3);
+		LOGGER.info("TEST DATA: Employees saved!");
 
 		// creation of tasks
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -153,7 +158,7 @@ public class App extends AbstractJavaFxApplicationSupport {
 			prjTaskRep.save(task1);
 			prjTaskRep.save(task2);
 			prjTaskRep.save(task3);
-	
+			LOGGER.info("TEST DATA: Tasks and task statuses saved!");
 			
 			// creation of project
 			Project prj1 = new Project("Building modernization", sdf.parse("01-01-2015"), sdf.parse("01-09-2015"), 0.9, 0.1);
@@ -164,9 +169,10 @@ public class App extends AbstractJavaFxApplicationSupport {
 			taskSetRep.save(tskSet1);
 			taskSetRep.save(tskSet2);
 			taskSetRep.save(tskSet3);
+			LOGGER.info("TEST DATA: Task sets are saved!");
 	
 			prjRep.save(prj1);
-			
+			LOGGER.info("TEST DATA: Projects are saved!");
 			
 			//creation of Performance statistics
 			PerfStat emp1PerfStat = new PerfStat(prj1, emp1, 10, 5, 0, 100);
@@ -176,8 +182,10 @@ public class App extends AbstractJavaFxApplicationSupport {
 			perfStatRep.save(emp1PerfStat);
 			perfStatRep.save(emp2PerfStat);
 			perfStatRep.save(emp3PerfStat);
+			LOGGER.info("TEST DATA: Project and employee assignments are saved!");
+
 			
-			System.out.println("Upload finished");
+			LOGGER.info("TEST DATA: Upload of TEST employee, task and project data is FINISHED!");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

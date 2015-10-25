@@ -16,6 +16,7 @@ import hu.bme.analytics.hems.ui.components.LinkedInBarChart;
 import hu.bme.analytics.hems.ui.components.ProjectIssueStatStackPane;
 import hu.bme.analytics.hems.ui.components.RapidMinerBarChart;
 import hu.bme.analytics.hems.ui.rapidminer.CandidateSearchService;
+import hu.bme.analytics.hems.ui.rapidminer.InternalExternalSelector;
 import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInProfileImport;
 import hu.bme.analytics.hems.ui.rapidminer.linkedin.LinkedInSeniorityProcessor;
 
@@ -25,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,7 +58,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HemsController {
-
+	private final static Logger LOGGER = Logger.getLogger(HemsController.class.getName());
+	
 	//general information
 	@FXML private TableView<Employee> tbl_persons;
 	@FXML private TableView<Project> tbl_projects;
@@ -68,6 +71,7 @@ public class HemsController {
 	@FXML private GridPane g_cadidateResult;
 	@FXML private RapidMinerBarChart rmbc_candidateResults;
 	@FXML private BorderPane bp_candSearch;
+	@FXML private ComboBox<InternalExternalSelector> cb_candidateType;
 	
 	//performance evaluation
 	@FXML private Tab tab_perfEval;
@@ -86,6 +90,7 @@ public class HemsController {
 	@FXML private Tab tab_linkedIn;
 	@FXML private BorderPane bp_linkedIn;
 	@FXML private LinkedInBarChart libc_experiences;
+	@FXML private ProgressIndicator pi_profileImport;
 	
 	public HemsController() {}
 	
@@ -225,50 +230,45 @@ public class HemsController {
 	
 	
 	//CANDIDATE SEARCH
+	public void candidateSearchSelectedHandler(Event evt){
+		LOGGER.info("CANDIDATE SEARCH TAB SELECTED!");
+		
+		//fill up candidate types combo box
+		cb_candidateType.getItems().clear();
+		cb_candidateType.getItems().add(InternalExternalSelector.INTERNAL);
+		cb_candidateType.getItems().add(InternalExternalSelector.EXTERNAL);
+		cb_candidateType.getItems().add(InternalExternalSelector.BOTH);
+		
+		//setting a default value for the candidate type selector
+		cb_candidateType.setValue(InternalExternalSelector.INTERNAL);
+	}
+	
 	public void searchCandidateClickHandler(MouseEvent me) {
-//		g_cadidateResult.getChildren().clear();
 		rmbc_candidateResults.setVisible(false);
 
 		//Add the process indicator to the grid 
 		ProgressIndicator progressInd = new ProgressIndicator();
-//		g_cadidateResult.addRow(0, progressInd);
 		bp_candSearch.setCenter(progressInd);
 		progressInd.setVisible(true);
 		progressInd.toFront();
 		
 		//Additional service for the Process indicator
-		CandidateSearchService css = new CandidateSearchService( tf_candidateSearch.getText() );
+		CandidateSearchService css = new CandidateSearchService( tf_candidateSearch.getText(),  cb_candidateType.getValue());
 		css.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			
 			@Override
 			public void handle(WorkerStateEvent event) {
-				
-//				g_cadidateResult.getChildren().clear();
-
 				List<PersonDistanceResult> results = css.getValue();
 				rmbc_candidateResults.setCandidateSearchResultData(results);
 				
 				bp_candSearch.setCenter(rmbc_candidateResults);
 				rmbc_candidateResults.setVisible(true);
-
-//				Text hdr_sim = new Text("Similarity");
-//				hdr_sim.getStyleClass().add("header");
-//				Text hdr_name = new Text("Name");
-//				hdr_name.getStyleClass().add("header");
-//				g_cadidateResult.addRow(0, hdr_sim, hdr_name);
-//				
-//				int i = 1;
-//				for (PersonDistanceResult actualRes : results) {
-//					Employee emp = App.get().empRep.findOne( (long)actualRes.getPersonId() );
-//					g_cadidateResult.addRow(i, new Text(Double.toString( Math.round( actualRes.getDistance()*100.0)/100.0 )), new Text(emp.getFirstName() + " " + emp.getLastName()) );
-//					i++;
-//				}
 			}
 		});
 		
 		css.restart();
 	}
-	
+
 	
 	
 	//TOP MENU
@@ -391,13 +391,15 @@ public class HemsController {
 	
 	//LINKEDIN FUNCTIONS
 	public void linkedInSelectedHandler(Event evt) {
-		System.out.println("LINKED-IN TAB SELECTED");
+		LOGGER.info("LINKED-IN TAB SELECTED");
 	}
 	
 	public void linkedInProfileImportClickHandler(MouseEvent evt) {
-		LinkedInProfileImport lipi = new LinkedInProfileImport();
+		pi_profileImport.setVisible(true);
+		pi_profileImport.setProgress(-1.0);
 		
-		lipi.importProfilesIntoDB(HemsProps.get().getProperty(HemsProps.LI_PROFILES));
+		LinkedInProfileImport lipi = new LinkedInProfileImport();
+		lipi.importProfilesIntoDB(HemsProps.get().getProperty(HemsProps.LI_PROFILES), pi_profileImport);
 	}
 	
 	public void linkedInProfileSeniorityClickHandler(MouseEvent evt) {

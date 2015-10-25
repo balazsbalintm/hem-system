@@ -41,9 +41,9 @@ public class ModelCaller {
 	
 	private static Map<Double, Double> m_reqIdAndResults = new HashMap<Double, Double>();
 	
-	public static List<PersonDistanceResult> executeCandidateSearchModel(String searchText) {
+	public static List<PersonDistanceResult> executeCandidateSearchModel(String searchText, InternalExternalSelector intExtSel) {
 		try {
-			EntityUtil.toCsvEmpAndTasks();
+			EntityUtil.toCsvEmpAndTasks(intExtSel);
 			
 			RapidMiner.init();
 			Process process = RapidMiner.readProcessFile(new File(PATH_MODEL));

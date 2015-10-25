@@ -6,7 +6,7 @@ public class LinkedInExperienceTest {
 		String path_profiles = "E:\\Workplace\\github\\hem-system\\ hem-system\\linkedin-profiles-list.csv";
 
 		LinkedInProfileImport lipi = new LinkedInProfileImport();
-		lipi.importProfilesIntoDB(path_profiles);
+		lipi.importProfilesIntoDB(path_profiles, null);
 	}
 
 }

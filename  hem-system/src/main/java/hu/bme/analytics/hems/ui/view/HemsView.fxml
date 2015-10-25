@@ -95,7 +95,7 @@
                   </content>
                 </Tab>
 <!--            CANDIDATE SEARCHER -->
-                <Tab text="Candidate searcher">
+                <Tab text="Candidate searcher" onSelectionChanged="#candidateSearchSelectedHandler">
                      <content>
                         <BorderPane fx:id="bp_candSearch" prefHeight="200.0" prefWidth="200.0">
                            <top>
@@ -103,6 +103,7 @@
                                  <children>
                                     <TextField fx:id="tf_candidateSearch" />
                                     <Button mnemonicParsing="false" onMouseClicked="#searchCandidateClickHandler" text="Search" />
+                                    <ComboBox fx:id="cb_candidateType"></ComboBox>
                                  </children>
                               </HBox>
                            </top>
@@ -162,8 +163,9 @@
 				<Tab fx:id="tab_linkedIn" text="LinkedIn" onSelectionChanged="#linkedInSelectedHandler">
 					<BorderPane fx:id="bp_linkedIn" prefHeight="300.0" prefWidth="300.0">
 						<top>
-							<VBox>
+							<VBox alignment="CENTER">
 								<Button text="Import LinkedIn profiles into DB!" BorderPane.alignment="CENTER" onMouseClicked="#linkedInProfileImportClickHandler"/>
+								<ProgressIndicator fx:id="pi_profileImport" visible="false"></ProgressIndicator>
 	                        	<Button text="Show me seniority diagram!" BorderPane.alignment="CENTER" onMouseClicked="#linkedInProfileSeniorityClickHandler"/>
 							</VBox>
 						</top>

@@ -14,13 +14,14 @@ public class Employee {
 
 	private String firstName;
 	private String lastName;
+	private boolean isInternalEmployee = true;
 
-	protected Employee() {
-	}
+	protected Employee() {}
 
-	public Employee(String firstName, String lastName) {
+	public Employee(String firstName, String lastName, boolean isInternalEmployee) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.isInternalEmployee = isInternalEmployee;
 	}
 
 	@Override
@@ -54,6 +55,14 @@ public class Employee {
 
 	public String getFullName() {
 		return firstName + " " + lastName;
+	}
+
+	public boolean isInternalEmployee() {
+		return isInternalEmployee;
+	}
+
+	public void setInternalEmployee(boolean isInternalEmployee) {
+		this.isInternalEmployee = isInternalEmployee;
 	}
 	
 }

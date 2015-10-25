@@ -102,7 +102,7 @@ public class LinkedInUtil {
 		Employee emp = App.get().empRep.findByFirstNameAndLastNameOrderByLastNameAsc(firstName, lastName);
 		
 		if(emp == null) {
-			emp = new Employee(firstName, lastName);
+			emp = new Employee(firstName, lastName, false);
 			App.get().empRep.save(emp);
 		}
 		

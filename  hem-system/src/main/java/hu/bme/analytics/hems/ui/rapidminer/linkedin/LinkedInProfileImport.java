@@ -2,15 +2,17 @@ package hu.bme.analytics.hems.ui.rapidminer.linkedin;
 
 import hu.bme.analytics.hems.App;
 import hu.bme.analytics.hems.entities.Employee;
-import hu.bme.analytics.hems.entities.LinkedInProfile;
 import hu.bme.analytics.hems.entities.Project;
 import hu.bme.analytics.hems.entities.ProjectTask;
 import hu.bme.analytics.hems.entities.TaskSet;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressIndicator;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,42 +26,56 @@ public class LinkedInProfileImport {
 	
 	private final static Logger LOGGER = Logger.getLogger(LinkedInProfileImport.class.getName());
 	
-	public void importProfilesIntoDB(String profilesPath) {
-		try {
-			l_profileLinks = LinkedInUtil.getLinkedInProfileList(profilesPath);
+	public void importProfilesIntoDB(String profilesPath, ProgressIndicator pi_profileImport) {
+		Task task = new Task<Void>() {
+			@Override protected Void call() throws Exception {
+				try {
+					l_profileLinks = LinkedInUtil.getLinkedInProfileList(profilesPath);
 
-			List<LinkedInProfile> l_linkedInProfiles = new ArrayList<LinkedInProfile>();
+					//Reading one-by-one the links from the profile list
+					for(int i = 0; i < l_profileLinks.size(); i++) {
+						Thread.sleep(5000);
+						
+						//TODO: AN INTERNAL WHILE CYCLE TO REACH A FILLED TASK DESCRIPTION
+						
+						String actProfile = l_profileLinks.get(i);
+						URL urlProfil = new URL(actProfile);
+						
+				    	Document parsedProfile = Jsoup.parse(urlProfil, 8000);
 
-			//Reading one-by-one the links from the profile list
-			for(String actProfile : l_profileLinks) {
-				Thread.sleep(5000);
-				URL urlProfil = new URL(actProfile);
-				
-		    	Document parsedProfile = Jsoup.parse(urlProfil, 8000);
+				    	//search for the name in order to create the employee profile
+				    	String[] fullName = LinkedInUtil.getPersonNameSeparated(parsedProfile);
+				    	Employee empLinkedIn = LinkedInUtil.addLinkedInPerson(fullName[0], fullName[1]);
+				    	
+				    	//create the technical project task based on the LinkedIn profile experience
+				    	String taskDescription = getProfileExperience(parsedProfile);
+				    	ProjectTask taskLinkedIn = LinkedInUtil.addLinkedInTask(taskDescription);
+				    	LOGGER.info("The following task description was retreived from the profile: " + taskDescription);
+				    	
+				    	//get the LinkedIn project which is a technical project in DB
+				    	Project prjLinkedIn = LinkedInUtil.getLinkedInProject();
+				    	
+				    	//commit project data
+				    	TaskSet taskSetLinkedIn = prjLinkedIn.assignTaskToEmployee(empLinkedIn, taskLinkedIn);
+				    	App.get().taskSetRep.save(taskSetLinkedIn);
+				    	App.get().prjRep.save(prjLinkedIn);
+				    	
+				    	Platform.runLater(new ProgressIndicatorThread(pi_profileImport, l_profileLinks.size(), i+1));
+					}
+					
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return null;
+		    }
 
-		    	//search for the name in order to create the employee profile
-		    	String[] fullName = LinkedInUtil.getPersonNameSeparated(parsedProfile);
-		    	Employee empLinkedIn = LinkedInUtil.addLinkedInPerson(fullName[0], fullName[1]);
-		    	
-		    	//create the technical project task based on the LinkedIn profile experience
-		    	String taskDescription = getProfileExperience(parsedProfile);
-		    	ProjectTask taskLinkedIn = LinkedInUtil.addLinkedInTask(taskDescription);
-		    	LOGGER.info("The following task description was retreived from the profile: ");
-		    	LOGGER.info(taskDescription);
-		    	
-		    	//get the LinkedIn project which is a technical project in DB
-		    	Project prjLinkedIn = LinkedInUtil.getLinkedInProject();
-		    	
-		    	//commit project data
-		    	TaskSet taskSetLinkedIn = prjLinkedIn.assignTaskToEmployee(empLinkedIn, taskLinkedIn);
-		    	App.get().taskSetRep.save(taskSetLinkedIn);
-		    	App.get().prjRep.save(prjLinkedIn);
-			}
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			@Override
+			protected void succeeded() {}
+		};
+		
+		Thread thrExpBarchart = new Thread(task);
+		thrExpBarchart.start();
 	}
 
 	private String getProfileExperience(Document parsedProfile) {
@@ -80,5 +96,24 @@ public class LinkedInProfileImport {
 		}
 		
 		return sbExperience.toString();
+	}
+	
+	private class ProgressIndicatorThread implements Runnable {
+		private ProgressIndicator pi_profileImport;
+		private double finalValue;
+		private double actualValue;
+		
+		public ProgressIndicatorThread(ProgressIndicator pi_profileImport, double finalValue, double actualValue) {
+			this.pi_profileImport = pi_profileImport;
+			this.finalValue = finalValue;
+			this.actualValue = actualValue;
+		}
+		
+		@Override
+		public void run() {
+			double progressStatus = actualValue / finalValue;
+			pi_profileImport.setProgress(progressStatus);
+		}
+		
 	}
 }
