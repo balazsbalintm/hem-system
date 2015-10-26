@@ -262,3 +262,8 @@
         rgb(255.0, 255.0, 255.0);
 
 }
+
+/* PROCESS INDICATOR FOR LINKEDIN */
+#pi_profileImport {
+	 -fx-padding: 6.0 0.0 10.0 0.0;
+}

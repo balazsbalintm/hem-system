@@ -37,10 +37,10 @@ public class LinkedInProfileImport {
 						String actProfile = l_profileLinks.get(i);
 						
 						Document parsedProfile = null;
-				    	String taskDescription = null; 
+				    	String taskExpDescription = null; 
 				    	String[] fullName = null;
 				    	int j = 0;
-				    	while (taskDescription == null && j < 4) {
+				    	while (taskExpDescription == null && j < 4) {
 				    		//reach the linked in profile's URL
 				    		URL urlProfil = new URL(actProfile);
 				    		parsedProfile = Jsoup.parse(urlProfil, 8000);
@@ -50,8 +50,8 @@ public class LinkedInProfileImport {
 				    		LOGGER.info("Name:" + fullName);
 				    		
 				    		//get the experience description out of the parser source
-				    		taskDescription = getProfileExperience(parsedProfile);
-				    		LOGGER.info("Task description: " + taskDescription);
+				    		taskExpDescription = getFullProfileExperience(parsedProfile);
+				    		LOGGER.info("Task description: " + taskExpDescription);
 				    		
 				    		j++;
 				    		Thread.sleep(5000);
@@ -64,9 +64,14 @@ public class LinkedInProfileImport {
 				    	//get the LinkedIn project which is a technical project in DB
 				    	Project prjLinkedIn = LinkedInUtil.getLinkedInProject();
 				    	
-				    	//create task, add it to the project with assigning to the linked in profile  
-				    	ProjectTask taskLinkedIn = LinkedInUtil.addLinkedInTask(taskDescription);
+				    	//create task, add it to the project with assigning to the linked in profile
+				    	ProjectTask taskLinkedIn = LinkedInUtil.addLinkedInTask(taskExpDescription);
+				    	
+				    	//first, remove all assignments that had before (only need the latest import)
+				    	prjLinkedIn.getM_assignments().remove(empLinkedIn);
 				    	TaskSet taskSetLinkedIn = prjLinkedIn.assignTaskToEmployee(empLinkedIn, taskLinkedIn);
+				    	
+				    	//save objects
 				    	App.get().taskSetRep.save(taskSetLinkedIn);
 				    	App.get().prjRep.save(prjLinkedIn);
 				    	
@@ -88,7 +93,7 @@ public class LinkedInProfileImport {
 		thrExpBarchart.start();
 	}
 
-	private String getProfileExperience(Document parsedProfile) {
+	private String getFullProfileExperience(Document parsedProfile) {
 		StringBuilder sbExperience = new StringBuilder();
 		
 		//Select the experience div in order to get all of the historical experience data
@@ -101,6 +106,12 @@ public class LinkedInProfileImport {
 			Elements descNodes = currExpNode.select("p[class*=description]");
 			for(Element currDescNode : descNodes) {
 				sbExperience.append(currDescNode.text());
+				sbExperience.append(" ");
+			}
+			
+			Elements titleNodes = currExpNode.select("h4");
+			for(Element currTitleNode : titleNodes) {
+				sbExperience.append(currTitleNode.text());
 				sbExperience.append(" ");
 			}
 		}

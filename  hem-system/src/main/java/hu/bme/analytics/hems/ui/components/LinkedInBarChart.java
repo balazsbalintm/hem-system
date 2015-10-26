@@ -44,6 +44,7 @@ public class LinkedInBarChart extends StackPane {
 		
 		bc.getData().addAll(serResults);
 		
+		
 		for(int i = 0; i < l_linkedInProfiles.size(); i++) {
 			LinkedInProfile actProfile = l_linkedInProfiles.get(i);
 			
@@ -51,9 +52,7 @@ public class LinkedInBarChart extends StackPane {
 			sb.append("-fx-background-image: url(\"");
 			sb.append(actProfile.getProfilePicLink());
 			sb.append("\");");
-			sb.append("-fx-background-repeat: no-repeat;-fx-background-size:auto;-fx-background-radius:25;");
-			 
-			System.out.println(sb.toString());
+			sb.append("-fx-background-repeat: no-repeat;-fx-background-size: contain;-fx-background-radius:15;");
 			
 			for(Node n:bc.lookupAll(".data" + i + ".chart-bar")) {
 				n.setStyle(sb.toString());

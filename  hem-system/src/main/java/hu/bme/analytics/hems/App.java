@@ -161,7 +161,7 @@ public class App extends AbstractJavaFxApplicationSupport {
 			LOGGER.info("TEST DATA: Tasks and task statuses saved!");
 			
 			// creation of project
-			Project prj1 = new Project("Building modernization", sdf.parse("01-01-2015"), sdf.parse("01-09-2015"), 0.9, 0.1);
+			Project prj1 = new Project("Building modernization", sdf.parse("01-01-2015"), sdf.parse("01-09-2015"), 0.9, 0.1, true);
 			TaskSet tskSet1 = prj1.assignTaskToEmployee(emp1, task1);
 			TaskSet tskSet2 = prj1.assignTaskToEmployee(emp2, task2);
 			TaskSet tskSet3 = prj1.assignTaskToEmployee(emp3, task3);

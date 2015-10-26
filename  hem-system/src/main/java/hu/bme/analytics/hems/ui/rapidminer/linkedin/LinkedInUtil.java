@@ -83,7 +83,7 @@ public class LinkedInUtil {
 
 		try {
 			if(linkedInProject == null) {
-				linkedInProject = new Project("LINKEDIN", sdf.parse("01-01-0001"), sdf.parse("01-01-2100"), 1.0, 0);
+				linkedInProject = new Project("LINKEDIN", sdf.parse("01-01-0001"), sdf.parse("01-01-2100"), 1.0, 0, false);
 				App.get().prjRep.save(linkedInProject);
 			}
 		} catch (ParseException e) {e.printStackTrace();}

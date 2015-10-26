@@ -29,16 +29,18 @@ public class Project {
 	private Date end_date;
 	private double qualityImportance = 0.9;
 	private double timeImportance = 0.1;
+	private boolean isInternalProject = true;
 	
 	protected Project() {
 		
 	}
 
 	public Project(String projectName, Date start_date, Date end_date, double qualityImportance,
-			double timeImportance) {
+			double timeImportance, boolean isInternalProject) {
 		super();
 		this.projectName = projectName;
 		this.start_date = start_date;
+		this.isInternalProject = isInternalProject;
 		
 		//if end date < start date, then make end date the start date
 		if(end_date.compareTo(start_date) == -1)
@@ -165,5 +167,13 @@ public class Project {
 	@Override
 	public String toString() {
 		return id + " " + projectName;
+	}
+
+	public boolean isInternalProject() {
+		return isInternalProject;
+	}
+
+	public void setInternalProject(boolean isInternalProject) {
+		this.isInternalProject = isInternalProject;
 	}
 }

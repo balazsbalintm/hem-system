@@ -13,7 +13,6 @@
 <?import hu.bme.analytics.hems.ui.components.RapidMinerBarChart?>
 <?import hu.bme.analytics.hems.ui.components.LinkedInBarChart?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" styleClass="background" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.bme.analytics.hems.ui.controller.HemsController">
    <center>
       <AnchorPane fx:id="anchor_center" BorderPane.alignment="CENTER">
@@ -108,21 +107,7 @@
                               </HBox>
                            </top>
                            <center>
-                           <RapidMinerBarChart id="rmbc_candidateResults" fx:id="rmbc_candidateResults" visible="false"/>                           
-<!--                               <GridPane id="cadidateResult" fx:id="g_cadidateResult"> -->
-<!--                                <columnConstraints> -->
-<!--                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" /> -->
-<!--                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" /> -->
-<!--                                 </columnConstraints> -->
-<!--                                <children> -->
-<!--                                     <Label styleClass="header" text="a" GridPane.rowIndex="0" GridPane.columnIndex="0" /> -->
-<!--                                     <Label styleClass="header" text="b" GridPane.rowIndex="0" GridPane.columnIndex="1" /> -->
-<!--                                     <Label styleClass="body" text="a" GridPane.rowIndex="1" GridPane.columnIndex="0" /> -->
-<!--                                     <Label styleClass="body" text="b" GridPane.rowIndex="1" GridPane.columnIndex="1" /> -->
-<!--                                     <Label styleClass="body" text="a" GridPane.rowIndex="2" GridPane.columnIndex="0" /> -->
-<!--                                     <Label styleClass="body" text="b" GridPane.rowIndex="2" GridPane.columnIndex="1" /> -->
-<!--                                  </children> -->
-<!--                               </GridPane> -->
+                           		<RapidMinerBarChart id="rmbc_candidateResults" fx:id="rmbc_candidateResults" visible="false"/>                           
                            </center>
                          </BorderPane>
                      </content>

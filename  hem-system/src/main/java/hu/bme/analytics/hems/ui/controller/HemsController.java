@@ -302,10 +302,15 @@ public class HemsController {
 		ta_perfText.setText("");
 		
 		//fill the comboboxes with the available values
-		Iterator<Project> it_projects = App.get().prjRep.findAll().iterator();
-		while(it_projects.hasNext()) {
-			Project actPrj = it_projects.next();
-			cb_perfEval_project.getItems().add(actPrj);
+		List<Project> l_projects = App.get().prjRep.findByIsInternalProjectOrderByProjectNameAsc(true);
+		if(l_projects != null) {
+			Iterator<Project> it_projects = l_projects.iterator(); 
+
+			while(it_projects.hasNext()) {
+				Project actPrj = it_projects.next();
+				cb_perfEval_project.getItems().add(actPrj);
+			}
+			
 		}
 	}
 	
@@ -361,10 +366,15 @@ public class HemsController {
 		vb_issueStat.getChildren().clear();
 		
 		//fill the combo boxes with the available values
-		Iterator<Project> it_projects = App.get().prjRep.findAll().iterator();
-		while(it_projects.hasNext()) {
-			Project actPrj = it_projects.next();
-			cb_issueStat_project.getItems().add(actPrj);
+		List<Project> l_projects = App.get().prjRep.findByIsInternalProjectOrderByProjectNameAsc(true);
+		if(l_projects != null) {
+			Iterator<Project> it_projects = l_projects.iterator(); 
+
+			while(it_projects.hasNext()) {
+				Project actPrj = it_projects.next();
+				cb_issueStat_project.getItems().add(actPrj);
+			}
+			
 		}
 	}
 	
