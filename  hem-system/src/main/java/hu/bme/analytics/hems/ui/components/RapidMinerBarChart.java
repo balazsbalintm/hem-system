@@ -22,12 +22,13 @@ public class RapidMinerBarChart extends StackPane {
 	public void setCandidateSearchResultData(List<PersonDistanceResult> l_personDistances) {
 		this.getChildren().clear();
 		
+		//setting up X axis
 		final NumberAxis xAxis = new NumberAxis(0.0, 1.0, 0.05);
-		final CategoryAxis yAxis = new CategoryAxis();
-		final BarChart<Number, String> bc = new BarChart<Number, String>(xAxis, yAxis);
-		bc.setTitle("Candidate Search result summary");
 		xAxis.setLabel("Relevancy");
 		xAxis.setTickLabelRotation(90);
+
+		//setting up Y axis
+		final CategoryAxis yAxis = new CategoryAxis();
 		yAxis.setLabel("Candidate");
 		
 		List<Boolean> l_intExtEmps = new ArrayList<Boolean>();		
@@ -36,7 +37,7 @@ public class RapidMinerBarChart extends StackPane {
 			PersonDistanceResult actPersDistance = l_personDistances.get(i);
 			Employee emp = App.get().empRep.findOne( (long)actPersDistance.getPersonId() );
 			
-			
+			//creation of the BarChart data
 			serResults.getData().add(
 					new XYChart.Data(
 							Math.round( actPersDistance.getDistance()*100.0)/100.0,
@@ -44,9 +45,13 @@ public class RapidMinerBarChart extends StackPane {
 							)
 					);
 			
+			//store who is internal/external employee
 			l_intExtEmps.add(emp.isInternalEmployee());
 		}		
 		
+		//creation of the barchart with X,Y axis
+		final BarChart<Number, String> bc = new BarChart<Number, String>(xAxis, yAxis);
+		bc.setTitle("Candidate Search result summary");
 		bc.getData().addAll(serResults);
 		bc.setLegendVisible(false);
 		updateBarChartColors(bc, l_intExtEmps);
@@ -54,12 +59,18 @@ public class RapidMinerBarChart extends StackPane {
 		this.getChildren().add(bc);
 	}
 	
+	/**
+	 * @param barChart The JavaFX BarChart component which should be updated with the colors.
+	 * @param l_intExtEmps The list of booleans which contains who is an internal/external employee in the database.
+	 */
 	private void updateBarChartColors(BarChart<Number,String> barChart, List<Boolean> l_intExtEmps){
 		int j = 0;
 		for(Node node:barChart.lookupAll(".default-color0.chart-bar")) {
 			if (l_intExtEmps.get(j)) {
+				//greenish color
 				node.setStyle("-fx-bar-fill: #ADFFB9;");
 			} else {
+				//blueish color
 				node.setStyle("-fx-bar-fill: #82A1FF;");
 			}
 			j++;

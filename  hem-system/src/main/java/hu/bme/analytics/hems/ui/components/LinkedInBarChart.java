@@ -46,7 +46,7 @@ public class LinkedInBarChart extends StackPane {
 		final BarChart<Number, String> bc = new BarChart<Number, String>(xAxis, yAxis);
 		bc.setTitle("Linked in profile - experiences");
 		bc.setLegendVisible(false);
-		bc.getData().addAll(serResults);admin	
+		bc.getData().addAll(serResults);
 		
 		//update the barchart with the linkedin profile pictures
 		for(int i = 0; i < l_linkedInProfiles.size(); i++) {

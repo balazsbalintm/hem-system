@@ -3,6 +3,7 @@ package hu.bme.analytics.hems.ui.rapidminer;
 import hu.bme.analytics.hems.HemsProps;
 import hu.bme.analytics.hems.entities.EntityUtil;
 import hu.bme.analytics.hems.entities.PersonDistanceResult;
+import hu.bme.analytics.hems.ui.controller.HemsController;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
@@ -23,6 +25,8 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.tools.XMLException;
 
 public class ModelCaller {
+	private final static Logger LOGGER = Logger.getLogger(ModelCaller.class.getName());
+	
 	//STATIC INIT
 	static {
 		PATH_MODEL = HemsProps.get().getProperty(HemsProps.RM_MODELPATH);
@@ -49,8 +53,10 @@ public class ModelCaller {
 			Process process = RapidMiner.readProcessFile(new File(PATH_MODEL));
 	
 			process.getOperator("input_csv").setParameter("csv_file", PATH_CSV);
+			LOGGER.info("MODELCALLER: Path of input file: " + PATH_CSV);
 			process.getOperator("search_expression").setParameter("text", searchText);
-	
+			LOGGER.info("MODELCALLER: Expression searched for: " + searchText);
+			
 			List<PersonDistanceResult> l_results = new ArrayList<PersonDistanceResult>();
 	
 			IOContainer ioResult = process.run();
@@ -72,6 +78,7 @@ public class ModelCaller {
 							distance = example.getValue(a);
 						}
 					}
+					LOGGER.info("MODELCALLER: Request ID - " + requestId + "; Distance - " + distance);
 					m_reqIdAndResults.put(requestId, distance);
 				}
 			}

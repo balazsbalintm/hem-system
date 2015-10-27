@@ -22,11 +22,12 @@ import javafx.scene.layout.StackPane;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProjectIssueStatStackPane extends StackPane {
-	//Task states consts
+	//Task states constants
 	private String TSK_CLOSE = "Closed";
 	private String TSK_OPEN = "Open";
 	private String TSK_INPROGRESS = "In progress";
 	
+	//determine on which level the pie chart is. Upper level: people; Lower level: task
 	private enum ChartLevel {PEOPLE, TASK};
 	
 	private PieChart pc_project;
@@ -36,6 +37,10 @@ public class ProjectIssueStatStackPane extends StackPane {
 	private Map<Employee, PerfStat> m_empPerfStat;
 	private ObservableList<Data> pieChartData;
 	
+	/**
+	 * @param pieChartData "Person" level data for the pie chart
+	 * @param m_empPerfStat A mapping between the employee and its performance statistics. For example: John Smith -> 0 Open 2 Closed 4 In progress
+	 */
 	public ProjectIssueStatStackPane(ObservableList<Data> pieChartData, Map<Employee, PerfStat> m_empPerfStat) {
 		this.m_empPerfStat = m_empPerfStat;		
 		this.pieChartData = pieChartData;
@@ -46,6 +51,7 @@ public class ProjectIssueStatStackPane extends StackPane {
 		this.getChildren().add(pc_project);
 		this.setAlignment(pc_project, Pos.CENTER);
 		
+		//BACK BUTTON SETUP
 		iv_backButton = new BackButton();
 		iv_backButton.setPissp(this);
 		this.getChildren().add(iv_backButton);
@@ -58,12 +64,17 @@ public class ProjectIssueStatStackPane extends StackPane {
 	
 	@Autowired
 	private void setDrillDownData(ObservableList<Data> pieChartData) {
+		//binding a click handler to ALL part of the "Person" level pie
+		//in case of one of them is clicked, task level pie chart can be displayed
 		for(Data highLevelData : pieChartData) {
 			highLevelData.getNode().setOnMouseClicked((MouseEvent t) -> {
-				
+
+				//iterate through the employees in the database
 				Iterator<Employee> it_emps = m_empPerfStat.keySet().iterator();
 				while (it_emps.hasNext()){
 					Employee emp = it_emps.next();
+					
+					//found the employee whose piechart part's was clicked
 					if(emp.getFullName().equals(highLevelData.getName())) {
 						PerfStat perfStat = m_empPerfStat.get(emp);
 						pc_project.setData(FXCollections.observableArrayList(
@@ -74,11 +85,16 @@ public class ProjectIssueStatStackPane extends StackPane {
 					}
 				}
 				
+				//if all data is set, change to "Task" level of display the pie chart
 				setImageToLevel(ChartLevel.TASK);				
 	        });
 		}
 	}
 	
+	/**
+	 * Can set the level of chart which should be displayed.
+	 * @param chrLvl Level of chart which should be displayed. Person / Task level.
+	 */
 	private void setImageToLevel(ChartLevel chrLvl){
 		try {
 			if(this.getChildren().contains(img_levelIcon))
@@ -103,6 +119,9 @@ public class ProjectIssueStatStackPane extends StackPane {
 		}
 	}
 	
+	/**
+	 * In case of "Back" button is clicked, set back to Person level the pie chart 
+	 */
 	public void setBackToTopLevel(){
 		setImageToLevel(ChartLevel.PEOPLE);
 	}

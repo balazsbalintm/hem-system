@@ -109,6 +109,8 @@ public class LinkedInProfileImport {
 				sbExperience.append(" ");
 			}
 			
+			//H4 tag which contains the "Title" of the position.
+			//It is important to include into the experience as in many cases the person uses other description words in the position title and description.
 			Elements titleNodes = currExpNode.select("h4");
 			for(Element currTitleNode : titleNodes) {
 				sbExperience.append(currTitleNode.text());
@@ -119,11 +121,19 @@ public class LinkedInProfileImport {
 		return sbExperience.toString();
 	}
 	
+	/**
+	 *	A process indicator thread which updates LinkedInProfileImporter's process indicator's component. 
+	 */
 	private class ProgressIndicatorThread implements Runnable {
 		private ProgressIndicator pi_profileImport;
 		private double finalValue;
 		private double actualValue;
 		
+		/**
+		 * @param pi_profileImport The ProcessIndicator JavaFX components which should be updated.
+		 * @param finalValue Expected highest (final) value which should be reached. Ie.: 10
+		 * @param actualValue Progress value which falls between [0,finalValue]
+		 */
 		public ProgressIndicatorThread(ProgressIndicator pi_profileImport, double finalValue, double actualValue) {
 			this.pi_profileImport = pi_profileImport;
 			this.finalValue = finalValue;

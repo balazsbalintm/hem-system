@@ -14,8 +14,7 @@ import org.jsoup.select.Elements;
 
 public class LinkedInSeniorityProcessor {
 	private final static Logger LOGGER = Logger.getLogger(LinkedInSeniorityProcessor.class.getName());
-	private static String EXPERIENCE_CONTAINER = "background-experience";
-	private static boolean TEST_MODE = true;
+	private static boolean TEST_MODE = false;
 	private static int TRY_LIMIT = 4;
 	
 	private List<String> l_profileLinks = null;
@@ -40,7 +39,7 @@ public class LinkedInSeniorityProcessor {
 		    		//reach the linked in profile's URL
 		    		URL urlProfil = new URL(actProfile);
 		    		parsedProfile = Jsoup.parse(urlProfil, 8000);
-
+		    		
 			        personName = LinkedInUtil.getPersonName(parsedProfile);
 			        LOGGER.info("Person name: " + personName);
 			        
@@ -68,29 +67,42 @@ public class LinkedInSeniorityProcessor {
 		return new ArrayList<LinkedInProfile>();
 	}
 
+	//static constants for holding words that should be looked for in the LinkedIn HTML code
 	private static String MONTH = "month";
 	private static String MONTHS = "months";
 	private static String YEAR = "year";
 	private static String YEARS = "years";
+	private static String EXPERIENCE_CONTAINER = "background-experience";
+	/**
+	 * Based on the parsed LinkedIn profile, the function digs up the year of experience related entries, sums it and returns it as the sum experience in years of the profile.
+	 * @return In a double format the number of years that many experience have. For example: 6.43 (years)
+	 */
 	private double getYearsOfExperience(Element parsedProfile) {
+		//get the div which contains the work experience (jobs, not projects) of the profile
 		Element projects = parsedProfile.getElementById(EXPERIENCE_CONTAINER);
 		if (projects == null)
 			return -1;
 		
+		//the year and month related entries in the experience div
 		Elements expDates = projects.select("span[class=experience-date-locale]");
 		if(expDates == null || expDates.size() == 0 )
 			return -1;
 		
+		//walk through the found year and month related entries
 		double sumYear = 0;
 		double sumMonths = 0;
 		for(Element actExpDate : expDates) {
 			String actExpDateInHTML = actExpDate.html();
+			//remove parenthesis and replace it with space
 			actExpDateInHTML = actExpDateInHTML.replace("(", " ");
 			actExpDateInHTML = actExpDateInHTML.replace(")", " ");
 			
+			//split the text based on space char. Example input: "6 years and 1 month"
 			String[] actExpDateArray = actExpDateInHTML.split(" ");
 			
 			for(int i = 0; i < actExpDateArray.length; i++) {
+				//below logic assumes if year/years/month/months found as a text, then on the previous(i-1)
+				//position a number should stay. For example: 1 year, 6 years, 1 month, 5 months
 				String currentWord = actExpDateArray[i];
 				if(MONTH.equals(currentWord) || MONTHS.equals(currentWord)) {
 					LOGGER.info("MONTH: " + actExpDateArray[i-1]);
@@ -103,6 +115,7 @@ public class LinkedInSeniorityProcessor {
 				}
 			}
 		}
+		//return the year and the month articulated in years (6 month / 12 = 0.5 year)
 		return sumYear + sumMonths/12;
 	}
 	

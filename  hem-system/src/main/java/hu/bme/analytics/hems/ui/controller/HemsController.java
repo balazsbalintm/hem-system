@@ -60,7 +60,7 @@ import org.springframework.stereotype.Component;
 public class HemsController {
 	private final static Logger LOGGER = Logger.getLogger(HemsController.class.getName());
 	
-	//general information
+	//data browser
 	@FXML private TableView<Employee> tbl_persons;
 	@FXML private TableView<Project> tbl_projects;
 	@FXML private TableView<ProjectTask> tbl_tasks;
@@ -94,7 +94,9 @@ public class HemsController {
 	
 	public HemsController() {}
 	
-	
+	//**********************
+	//DATA BROWSER FUNCTIONS
+	//**********************
 	public void personDataDownloadClickHandler(MouseEvent me) {
 		Iterator<Employee> it_emps = App.get().empRep.findAll().iterator();
 		List<Employee> l_emps = new ArrayList<Employee>();
@@ -228,8 +230,9 @@ public class HemsController {
 	}
 	
 	
-	
+	//****************
 	//CANDIDATE SEARCH
+	//****************
 	public void candidateSearchSelectedHandler(Event evt){
 		LOGGER.info("CANDIDATE SEARCH TAB SELECTED!");
 		
@@ -271,7 +274,9 @@ public class HemsController {
 
 	
 	
+	//********
 	//TOP MENU
+	//********
 	public void closeButtonClickHandler(ActionEvent evt) {
 		System.exit(0);
 	}
@@ -291,7 +296,9 @@ public class HemsController {
 	
 	
 	
+	//**********************
 	//PERFORMANCE EVALUATION
+	//**********************
 	public void performanceEvaluationSelectedHandler(Event evt) {
 		if(!tab_perfEval.isSelected())
 			return;
@@ -354,7 +361,10 @@ public class HemsController {
 	}
 	
 	
+	
+	//****************
 	//ISSUE STATISTICS
+	//****************
 	public void issueStatsSelectedHandler(Event evt) {
 		if(!tab_issueStats.isSelected())
 			return;
@@ -398,8 +408,9 @@ public class HemsController {
 		vb_issueStat.getChildren().add(pissp);
 	}
 	
-	
+	//******************
 	//LINKEDIN FUNCTIONS
+	//******************
 	public void linkedInSelectedHandler(Event evt) {
 		LOGGER.info("LINKED-IN TAB SELECTED");
 	}
