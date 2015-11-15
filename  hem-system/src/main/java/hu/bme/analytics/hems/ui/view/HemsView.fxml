@@ -12,6 +12,8 @@
 <?import hu.bme.analytics.hems.ui.components.BackButton?>
 <?import hu.bme.analytics.hems.ui.components.RapidMinerBarChart?>
 <?import hu.bme.analytics.hems.ui.components.LinkedInBarChart?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.Image?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" styleClass="background" stylesheets="@../style/HemsView.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.bme.analytics.hems.ui.controller.HemsController">
    <center>
@@ -44,21 +46,49 @@
                                   
                                 </rowConstraints>
                                  <children>
+                                 	<!-- Data Browser - Persons -->
                                     <Label text="Person's list" GridPane.rowIndex="0" />
                                     <TableView fx:id="tbl_persons" GridPane.rowIndex="1" />
-                                    <Button mnemonicParsing="false" onMouseClicked="#personDataDownloadClickHandler" text="Download Persons" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#personDataDownloadClickHandler" text="Persons" GridPane.columnIndex="1" GridPane.rowIndex="1">
+	                                    <graphic>
+						                    <ImageView>
+						                        <Image url="@../style/smallicons/man_small.png" />
+						                    </ImageView>
+						                </graphic>
+	                                 </Button>
                                    
+                                    <!-- Data Browser - Projects -->
                                    	<Label text="Project list" GridPane.rowIndex="2" />
                                     <TableView fx:id="tbl_projects" GridPane.rowIndex="3" />
-                                    <Button mnemonicParsing="false" onMouseClicked="#projectDataDownloadClickHandler" text="Download Projects" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#projectDataDownloadClickHandler" text="Projects" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    	<graphic>
+						                    <ImageView>
+						                        <Image url="@../style/smallicons/project_small.png" />
+						                    </ImageView>
+						                </graphic>
+                                    </Button>
                                     
+                                    <!-- Data Browser - Tasks -->
                                     <Label text="Task list" GridPane.rowIndex="4" />
                                     <TableView fx:id="tbl_tasks" GridPane.rowIndex="5" />
-                                    <Button mnemonicParsing="false" onMouseClicked="#taskDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#taskDataDownloadClickHandler" text="Tasks" GridPane.columnIndex="1" GridPane.rowIndex="5">
+	                                    <graphic>
+						                    <ImageView>
+						                        <Image url="@../style/smallicons/tasks_small.png" />
+						                    </ImageView>
+						                </graphic>
+                                    </Button>
                                     
+                                    <!-- Data Browser - Assignments -->
                                     <Label text="Assignment list" GridPane.rowIndex="6" />
                                     <TableView fx:id="tbl_assignments" GridPane.rowIndex="7" />
-                                    <Button mnemonicParsing="false" onMouseClicked="#assignmentDataDownloadClickHandler" text="Download Tasks" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#assignmentDataDownloadClickHandler" text="Assignment" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                    	<graphic>
+						                    <ImageView>
+						                        <Image url="@../style/smallicons/assignment_small.png" />
+						                    </ImageView>
+						                </graphic>
+                                    </Button>
                                  </children>
                               </GridPane>
                            </content>
